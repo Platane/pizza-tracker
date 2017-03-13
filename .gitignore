@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log*
+yarn-error.log*
+pack.zip
+Thumbs.db
+.tmp
+dist
+lib
+gh-pages
+flow-typed
