@@ -20,9 +20,10 @@ export const update = async ( all: boolean = false  ) => {
         const { userName, counts } = users[i]
         const lastDate = counts.reduce( (max,{date}) => Math.max( max, date ), (new Date('01/01/2017')).getTime() )
 
+        const results = await ( all ? fetcher.fetchAll : fetcher.fetch )( userName, lastDate )
+
         users[i].counts = removeDuplicate([
-            ...( await ( all ? fetcher.fetchAll : fetcher.fetch )( userName, lastDate ) )
-                .filter( x => !counts.some( u => x.tweet_id == u.tweet_id ) )
+            ...results.filter( x => !counts.some( u => x.tweet_id == u.tweet_id ) )
             ,
             ...counts,
         ])

@@ -6,5 +6,7 @@ Thumbs.db
 .tmp
 dist
 lib
+back/bundle
+back/bundle.zip
 gh-pages
 flow-typed
