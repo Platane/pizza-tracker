@@ -1,7 +1,8 @@
-import type {Count} from '../../type/commonType'
+import type {Count} from '../type/commonType'
+
+
 
 type ActionInitHistory = { type: 'initHistory', userName: string, counts: Array<Count> }
-
 
 export const initHistory = ( counts: Array<Count>, userName: string ) : ActionInitHistory =>
     ({
@@ -10,7 +11,11 @@ export const initHistory = ( counts: Array<Count>, userName: string ) : ActionIn
         userName
     })
 
-type ActionAllHistoryInited = { type: 'initHistory', userName: string, counts: Array<Count> }
+
+
+
+
+type ActionAllHistoryInited = { type: 'allHistoryInited' }
 
 export const allHistoryInited = () : ActionAllHistoryInited =>
     ({
@@ -18,4 +23,18 @@ export const allHistoryInited = () : ActionAllHistoryInited =>
     })
 
 
-export type Action = ActionInitHistory | ActionAllHistoryInited
+
+
+
+type ActionSetTimeCursor = { type: 'setTimeCursor', k: number }
+
+export const setTimeCursor = ( k: number ) : ActionSetTimeCursor =>
+    ({
+        type    : 'setTimeCursor',
+        k,
+    })
+
+
+
+
+export type Action = ActionInitHistory | ActionAllHistoryInited | ActionSetTimeCursor

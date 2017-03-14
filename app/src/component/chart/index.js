@@ -6,7 +6,8 @@ import type {State, Dispatch}       from '../../index'
 
 const mapStateToProps = ( state: State ) =>
     ({
-        users : state.users
+        users : state.users,
+        k     : state.timeCursor.k,
     })
 
 const mapDispatchToProps = ( dispatch: Dispatch ) =>

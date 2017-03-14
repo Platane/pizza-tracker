@@ -49,9 +49,11 @@ const createMatrixBuilder = () => {
 
         build: ( k:number, tx:number, ty:number ) => {
 
-            vec3.set( center, k*0.1, 0, 0 )
+            const a = 0.15
 
-            vec3.set( eye, Math.cos(Math.PI*2*tx)*3, 3+ty*0.5, Math.sin(Math.PI*2*tx)*3 )
+            vec3.set( center, k, 0, 0 )
+
+            vec3.set( eye, k+Math.cos(Math.PI*2*tx)*3, 1+ty*0.5, Math.sin(Math.PI*2*tx)*3 )
 
 
             // build the base u,v,w
@@ -73,7 +75,7 @@ const createMatrixBuilder = () => {
                 // 0      , 0      , 0      , 1,
                 // eye[0] , eye[1] , eye[2] , 1,
                 // -eye[0] , -eye[1] , -eye[2] , 1,
-                center[0] , center[1] , center[2] , 1,
+                center[0]*a , center[1]*a , center[2]*a , 1,
             )
 
 
@@ -83,7 +85,7 @@ const createMatrixBuilder = () => {
             mat4.invert( lookAtMatrix, lookAtMatrix )
 
 
-            const a = 0.15
+
             const scale = mat4.fromScaling( mat4.create(), vec3.fromValues(a, a, a) )
 
             const m = mat4.mul(
@@ -174,7 +176,7 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
         if ( !running )
             return
 
-        worldMatrix.build( k=( k+0.01 )%12, tx, ty )
+        worldMatrix.build( k, tx, ty )
         renderers.pizzaEmitter.update()
 
         render()
@@ -184,11 +186,15 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
 
     return {
 
-        setCamera: ( _, x, y ) => { tx = x; ty = y },
+        setCamera: ( _: any, x: number, y: number ) => { tx = x; ty = y },
 
-        setLines: renderers.lines.update,
+        setK: ( u: number ) => {
+            k = u
+            renderers.lines.setK( u )
+            renderers.cube.setK( u )
+        },
 
-        // render: render,
+        setLines: renderers.lines.setLines,
 
         setRunning: ( value: boolean ) => {
             if ( value == running )

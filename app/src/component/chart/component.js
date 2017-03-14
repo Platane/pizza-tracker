@@ -59,6 +59,7 @@ export class Chart extends React.Component {
         if ( this._renderer ){
 
             this._renderer.setLines(this.props.lines)
+            this._renderer.setK(this.props.k)
 
             this._renderer.setCamera( 0, this.state.tx, this.state.ty )
             this._renderer.setRunning( true )

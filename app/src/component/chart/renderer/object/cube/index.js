@@ -49,7 +49,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
     const attribute_position    = bindAttribute( gl, program, 'aVertexPosition', 3 )
     const attribute_color       = bindAttribute( gl, program, 'aVertexColor', 4 )
     const elementIndex          = bindElementIndex( gl, program )
-    const uniform_worldMatrix   = bindUniform( gl, program, 'uWorldMatrix' )
+    const uniform_worldMatrix   = bindUniform( gl, program, 'uWorldMatrix', 'mat4' )
 
 
     attribute_position.update( vertices )
@@ -60,7 +60,17 @@ export const create = ( gl: WebGLRenderingContext ) => {
 
     return {
 
-        update: () => 0,
+        setK: ( k: number ) => {
+
+            const v = vertices
+                .map( (x,i) =>
+                    (i%3)==0
+                        ? k + x*0.2
+                        : x*0.2
+                )
+
+            attribute_position.update( v )
+        },
 
         draw: ( projectionMatrix: Mat4 ) => {
 

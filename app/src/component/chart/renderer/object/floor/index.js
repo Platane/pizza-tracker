@@ -11,7 +11,7 @@ import {
 } from '../../../util/shader'
 
 
-const FLOOR_WIDTH   = 4
+const FLOOR_WIDTH   = 5
 const FLOOR_LENGTH  = 1
 
 const vertices      = []
@@ -41,7 +41,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
     // Declare the vertex attribute
     const attribute_position    = bindAttribute( gl, program, 'aVertexPosition', 3 )
     const elementIndex          = bindElementIndex( gl, program )
-    const uniform_worldMatrix   = bindUniform( gl, program, 'uWorldMatrix' )
+    const uniform_worldMatrix   = bindUniform( gl, program, 'uWorldMatrix', 'mat4' )
 
 
     attribute_position.update( vertices )

@@ -35,20 +35,23 @@ export const bindAttribute = ( gl: WebGLRenderingContext, shaderProgram: WebGLPr
 
     const buffer         = gl.createBuffer()
 
-    const attributeIndex = gl.getAttribLocation(shaderProgram, name)
+    const location = gl.getAttribLocation(shaderProgram, name)
+
+    if ( location == -1 )
+        throw Error(`attribute ${name} not found in the shader program`)
 
     if (size > 1)
-        gl.enableVertexAttribArray(attributeIndex)
+        gl.enableVertexAttribArray(location)
 
     return {
         update : ( arr: Array<number> ) => {
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
             gl.bufferData(gl.ARRAY_BUFFER, Float32Array.from( arr ), gl.STATIC_DRAW)
-            gl.vertexAttribPointer(attributeIndex, size, gl.FLOAT, false, 0, 0)
+            gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0)
         },
         bind : () => {
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
-            gl.vertexAttribPointer(attributeIndex, size, gl.FLOAT, false, 0, 0)
+            gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0)
         },
     }
 }
@@ -68,18 +71,30 @@ export const bindElementIndex = ( gl: WebGLRenderingContext, shaderProgram: WebG
     }
 }
 
-export const bindUniform = ( gl: WebGLRenderingContext, shaderProgram: WebGLProgram, name: string ) => {
+export const bindUniform = ( gl: WebGLRenderingContext, shaderProgram: WebGLProgram, name: string, type: 'mat4' | 'float' ) => {
 
     let value
     const location = gl.getUniformLocation(shaderProgram, name)
 
+    if ( location == -1 )
+        throw Error(`uniform ${name} not found in the shader program`)
+
+    let bind
+    switch( type ){
+        case 'mat4'     :
+            bind = () => gl.uniformMatrix4fv( location, false, new Float32Array(value) )
+            break
+        case 'float'    :
+            bind = () => gl.uniform1f( location, value )
+            break
+        default         : throw Error(`unknow type ${type}`)
+    }
+
     return {
-        update : ( arr: Array<number> ) => {
-            value = new Float32Array(arr)
+        update : ( v: any ) => {
+            value = v
         },
-        bind : () => {
-            gl.uniformMatrix4fv(location, false, value)
-        },
+        bind,
     }
 }
 
@@ -88,6 +103,9 @@ export const bindUniformTexture = ( gl: WebGLRenderingContext, shaderProgram: We
     const texture = gl.createTexture()
 
     const location = gl.getUniformLocation(shaderProgram, name)
+
+    if ( location == -1 )
+        throw Error(`uniform ${name} not found in the shader program`)
 
     return {
         update : ( image: HTMLCanvasElement  ) => {

@@ -10,10 +10,11 @@ export type Props = {
     users   : Array<UserInfo>,
 
     max?    : number,
+    k       : number,
 }
 
 export const statify = ( C: Component<*,*,*> ) =>
-    ({ users, max }: Props ) => {
+    ({ users, max, k }: Props ) => {
 
         const start = (new Date('2017-01-01T00:00:00.100Z')).getTime()
         const end   = (new Date('2017-12-31T23:59:59.100Z')).getTime()
@@ -34,5 +35,5 @@ export const statify = ( C: Component<*,*,*> ) =>
                 : line
         })
 
-        return <C lines={[ ...lines, [ [0,0], [12,3] ], [ [0,0], [4,2], [12,3] ] ]} />
+        return <C lines={[ ...lines, [ [0,0], [12,3] ], [ [0,0], [4,2], [12,3] ] ]} k={k} />
     }

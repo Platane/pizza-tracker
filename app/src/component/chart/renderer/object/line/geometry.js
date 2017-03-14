@@ -7,7 +7,7 @@ type Line = Array<Vec2>
 
 
 const LINE_WIDTH    = 0.16
-const LINE_TICKNESS = 0.05
+const LINE_TICKNESS = 0.03
 const LINE_SEGMENT  = 6
 
 

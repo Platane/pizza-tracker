@@ -23,7 +23,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
     const world = createWorld()
 
     // init sprite
-    const texture = createPool( 512/n, n )
+    const texture = createPool( 254/n, n )
 
     // Create the shader program
     const program = createProgram( gl, vertexShaderSource, fragmentShaderSource )
@@ -34,7 +34,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
 
     const elementIndex          = bindElementIndex( gl, program )
 
-    const uniform_worldMatrix   = bindUniform( gl, program, 'uWorldMatrix' )
+    const uniform_worldMatrix   = bindUniform( gl, program, 'uWorldMatrix', 'mat4' )
 
     const sampler_pizza         = bindUniformTexture( gl, program, 'uSampler' )
 

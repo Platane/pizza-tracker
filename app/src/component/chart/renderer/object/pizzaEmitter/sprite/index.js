@@ -19,7 +19,5 @@ export const createPool = ( tileSize: number, n: number ) : HTMLCanvasElement =>
         ctx.restore()
     }
 
-    document.body.appendChild( canvas )
-
     return canvas
 }
