@@ -7,18 +7,28 @@ type Config = {
     gist_id                 : string,
 }
 
-const parseFile = ( text: string ): Array<Count> =>
-    text
+const parseFile = ( text: string ): {counts: Array<Count>, lastCheckDate: ?number} => {
+
+    let lastCheckDate = null
+
+    const counts = text
         .split(/\n/)
         .map( line => {
 
             const [ date, tweet_id, count ] = line.split(' ')
 
-            return tweet_id ? { date: +date, tweet_id, count: +count } : null
+            lastCheckDate = Math.max( +lastCheckDate, +date )
+
+            return tweet_id && tweet_id != '---' ? { date: +date, tweet_id, count: +count } : null
         })
         .filter( Boolean )
 
-const formatFile = ( counts: Array<Count> ): string  =>
+    return {counts, lastCheckDate}
+}
+
+const formatFile = ( counts: Array<Count>, lastCheckDate: ?number ): string  =>
+    ( lastCheckDate ? lastCheckDate + ' ---\n' : '' )
+    +
     counts
         .sort( (a,b) => a.date < b.date ? 1 : -1 )
         .map( ({ date, tweet_id, count }) => [date, tweet_id, count].join(' '))
@@ -45,7 +55,7 @@ export const create = (config: Config) => {
                 .map( userName =>
                     ({
                         userName,
-                        counts : parseFile( data.files[userName].content )
+                        ...parseFile( data.files[userName].content ),
                     })
                 )
         },
@@ -65,7 +75,7 @@ export const create = (config: Config) => {
                     files   : users.reduce( (o,user) =>
                         ({
                             ...o,
-                            [user.userName]: { content: formatFile( user.counts ) },
+                            [user.userName]: { content: formatFile( user.counts, user.lastCheckDate ) },
                         })
                     , {} )
                 }),
@@ -76,7 +86,7 @@ export const create = (config: Config) => {
                 .map( userName =>
                     ({
                         userName,
-                        counts : parseFile( data.files[userName].content )
+                        ...parseFile( data.files[userName].content ),
                     })
                 )
         },

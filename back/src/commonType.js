@@ -8,5 +8,6 @@ export type Count = {
 
 export type UserInfo = {
     userName                : string,
-    counts                  : Array<Count>
+    counts                  : Array<Count>,
+    lastCheckDate           : ?number,
 }
