@@ -7,5 +7,5 @@ export const twitter = {
 
 export const gist = {
     token                   : process.env.GITHUB_TOKEN,
-    gist_id                 : '20026468d92c5d63a6fe71265d1fda08',
+    gist_id                 : process.env.GIST_ID || '20026468d92c5d63a6fe71265d1fda08',
 }
