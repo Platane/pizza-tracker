@@ -49,7 +49,7 @@ const createMatrixBuilder = () => {
 
         build: ( k:number, tx:number, ty:number ) => {
 
-            const a = 0.15
+            const a = 0.19
 
             vec3.set( center, k, 0, 0 )
 

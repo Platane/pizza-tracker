@@ -23,7 +23,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
     const world = createWorld()
 
     // init sprite
-    const texture = createPool( 254/n, n )
+    const texture = createPool( 128/n, n )
 
     // Create the shader program
     const program = createProgram( gl, vertexShaderSource, fragmentShaderSource )
@@ -55,7 +55,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
 
             if ( u -- < 0 ) {
                 world.spawn( [Math.random()*0.2 + 5,Math.random()*1.2,Math.random()*0.2] )
-                u = 0
+                u = 3
             }
 
             const {uv, vertices, faces} = world.getGeometry()

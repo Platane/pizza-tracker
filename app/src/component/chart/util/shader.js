@@ -33,15 +33,14 @@ export const createProgram = ( gl: WebGLRenderingContext, vertexShaderSource: st
 
 export const bindAttribute = ( gl: WebGLRenderingContext, shaderProgram: WebGLProgram, name: string, size?: number = 1 ) => {
 
-    const buffer         = gl.createBuffer()
+    const buffer        = gl.createBuffer()
 
-    const location = gl.getAttribLocation(shaderProgram, name)
+    const location      = gl.getAttribLocation(shaderProgram, name)
 
     if ( location == -1 )
         throw Error(`attribute ${name} not found in the shader program`)
 
-    if (size > 1)
-        gl.enableVertexAttribArray(location)
+    gl.enableVertexAttribArray(location)
 
     return {
         update : ( arr: Array<number> ) => {

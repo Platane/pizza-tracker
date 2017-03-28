@@ -12,7 +12,11 @@ import {
     bindUniform
 } from '../../../util/shader'
 
-type Line = Array<Vec2>
+type Line = {
+    color       : [number,number,number,number],
+    dash_start  : number,
+    points      : Array<Vec2>,
+}
 
 
 export const create = ( gl: WebGLRenderingContext ) => {
@@ -25,6 +29,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
     const attribute_position    = bindAttribute( gl, program, 'aVertexPosition', 3 )
     const attribute_color       = bindAttribute( gl, program, 'aVertexColor', 4 )
     const attribute_length      = bindAttribute( gl, program, 'aVertexLength', 1 )
+    const attribute_dash        = bindAttribute( gl, program, 'aVertexDash', 1 )
 
     const elementIndex          = bindElementIndex( gl, program )
 
@@ -42,32 +47,26 @@ export const create = ( gl: WebGLRenderingContext ) => {
 
         setLines: ( lines: Array<Line> ) => {
 
-            const color = [ 0.5, 0.3, 0.9, 1 ]
-
             const vertices  = []
             const normals   = []
+            const colors    = []
             const faces     = []
             const length    = []
-
-            line_x.length = 0
+            const dash      = []
 
             lines
-                .forEach( (line, i) => {
-
-                    const res = computeLine( line )
+                .forEach( ({ points, dash_start, color}, i, arr) => {
 
                     const offset = vertices.length / 3
-
-                    line_x.push( line.map( p => p[0] ) )
 
                     // push length info
                     // ( useful to display dashed line )
                     {
                         let l=0
-                        line.forEach( (_,k) => {
+                        points.forEach( (_,k) => {
 
                             if ( k > 0 )
-                                l=l+vec2.distance(line[k], line[k-1])
+                                l=l+vec2.distance(points[k], points[k-1])
 
                             for(let u=6;u--;)
                                 length.push(l)
@@ -75,11 +74,28 @@ export const create = ( gl: WebGLRenderingContext ) => {
                         })
                     }
 
-                    vertices.push( ...res.vertices.map( (x, u) => u%3 == 2 ? x+ (i/(lines.length)-0.5)*2.1 : x ) )
+                    {
+                        points.forEach( p => {
+
+                            const v = p[0] > dash_start ? 1 : 0
+
+                            for(let u=6;u--;)
+                                dash.push(v)
+
+                        })
+                    }
+
+                    // compute the mesh geometry
+                    const res = computeLine( points )
+
+                    const tz  = (i/(arr.length)-0.5)*2.1
+
+                    vertices.push( ...res.vertices.map( (x, u) => u%3 == 2 ? x+tz : x ) )
                     normals.push( ...res.normals )
                     faces.push(
                         ...res.faces.map( i => offset + i )
                     )
+                    colors.push( ...[].concat( ...Array.from({ length: res.vertices.length/3 }).map( () => color ) ) )
                 })
 
             elementIndex.update(faces)
@@ -87,7 +103,8 @@ export const create = ( gl: WebGLRenderingContext ) => {
             attribute_position.update(vertices)
             attribute_normal.update(normals)
             attribute_length.update(length)
-            attribute_color.update( [].concat( ...Array.from({length: vertices.length/3 }).map( () => color ) ) )
+            attribute_dash.update(dash)
+            attribute_color.update(colors)
 
             n_faces = faces.length
         },
@@ -103,6 +120,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
             attribute_normal.bind()
             attribute_color.bind()
             attribute_length.bind()
+            attribute_dash.bind()
             uniform_worldMatrix.bind()
             uniform_k.bind()
 

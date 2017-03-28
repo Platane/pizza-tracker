@@ -6,7 +6,7 @@ import style                    from './style.css'
 export const App = () =>
     <div className={style.container}>
         <div className={style.chart}>
-            <Chart />
+            <Chart now={Date.now()}/>
         </div>
 
         <div className={style.slider}>

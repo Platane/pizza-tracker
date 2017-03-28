@@ -7,7 +7,11 @@ import type {Vec2}              from 'gl-matrix'
 import {create as createRenderer}   from './renderer'
 
 export type Props = {
-    lines   : Array<Array<Vec2>>,
+    lines   : Array<{
+        color       : [number, number, number, number],
+        dash_start  : number,
+        points      : Array<Vec2>
+    }>,
     k       : number,
 }
 
@@ -42,7 +46,7 @@ export class Chart extends React.Component {
 
         if ( !this._renderer ){
 
-            this._renderer = createRenderer( this.refs.canvas, 800 )
+            this._renderer = createRenderer( this.refs.canvas, 700 )
 
             this.forceUpdate()
         }
@@ -66,6 +70,6 @@ export class Chart extends React.Component {
             // this._renderer.render()
         }
 
-        return <canvas style={style.canvas} ref="canvas" width={600} height={600} style={{border:'solid 1px #333'}} />
+        return <canvas style={style.canvas} ref="canvas" style={{border:'solid 1px #333'}} />
     }
 }

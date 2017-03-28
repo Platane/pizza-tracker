@@ -96,6 +96,8 @@ module.exports = {
                             : { ...o, [ 'process.env.'+name ] : `'${ process.env[ name ] }'`}
                     ,{})
             ),
+
+            [`('SIMD' in this)`] : `('SIMD' in window)`,
         })
     ],
 

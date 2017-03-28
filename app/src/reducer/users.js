@@ -10,7 +10,10 @@ export const reducer = ( state: State, action: Action ) : State => {
 
         case 'initHistory' :
             return [
-                { counts: action.counts, userName: action.userName },
+                {
+                    counts  : action.counts,
+                    userName: action.userName,
+                },
                 ...state.filter( x => x.userName != action.userName )
             ]
 
