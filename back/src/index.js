@@ -11,7 +11,7 @@ const removeDuplicate = arr =>
 const shouldUpdateUser = ( old_user, new_user ) =>
     new_user.counts.some( x => !old_user.counts.some( u => u.tweet_id == x.tweet_id) )
     ||
-    ( old_user.lastCheckDate || 0 ) + 1000*60*60*24*2 < ( new_user.lastCheckDate || 0 )
+    ( old_user.lastCheckDate || 0 ) + 1000*60*60*24*7 < ( new_user.lastCheckDate || 0 )
 
 export const update = async ( all: boolean = false  ) => {
 
