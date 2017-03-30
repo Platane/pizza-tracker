@@ -2,6 +2,7 @@ import {mat4, vec3}             from 'gl-matrix'
 
 import {create as createLineRenderer}   from './object/line'
 import {create as createFloor}          from './object/floor'
+import {create as createFloorLabel}     from './object/floorLabel'
 import {create as createCube}           from './object/cube'
 import {create as createPizzaEmitter}   from './object/pizzaEmitter'
 
@@ -145,6 +146,7 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
     const renderers = {
         lines           : createLineRenderer( gl ),
         floor           : createFloor( gl ),
+        floorLabel      : createFloorLabel( gl ),
         cube            : createCube( gl ),
         pizzaEmitter    : createPizzaEmitter( gl ),
     }
@@ -159,6 +161,7 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
         ;[
             renderers.lines,
             renderers.floor,
+            renderers.floorLabel,
             renderers.cube,
             renderers.pizzaEmitter,
         ].forEach( ({ draw }) =>

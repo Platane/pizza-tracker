@@ -63,7 +63,6 @@ let store
             {count: 4, date: (new Date('2017-07-11')).getTime(), tweet_id: 'a'},
             {count: 6, date: (new Date('2017-07-21')).getTime(), tweet_id: 'a'},
             {count: 9, date: (new Date('2017-08-21')).getTime(), tweet_id: 'a'},
-            {count: 10, date: (new Date('2017-10-01')).getTime(), tweet_id: 'a'},
         ], 'tim' )
     )
 
