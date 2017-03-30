@@ -29,7 +29,7 @@ export const statify = ( C: Component<void, PropsOut, {}> ) =>
         const end   = (new Date('2017-12-31T23:59:59.100Z')).getTime()
 
 
-        const _max  = users.reduce( (max,{counts}) => counts.reduce( (max,x) => Math.max( max, x.count ), 0 ), max || 0 )
+        const _max  = users.reduce( (max,{counts}) => counts.reduce( (max,x) => Math.max( max, x.count ), max ), max || 0 )
 
         const lines = users.map( ({ counts }, i) => {
 

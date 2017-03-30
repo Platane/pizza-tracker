@@ -90,6 +90,7 @@ let store
                         return tweet_id && tweet_id != '---' ? { date: +date, tweet_id, count: +count } : null
                     })
                     .filter( Boolean )
+                    .sort( (a, b) => a.date > b.date ? 1 : -1 )
 
                 dispatch( action.initHistory( counts, userName ) )
             })

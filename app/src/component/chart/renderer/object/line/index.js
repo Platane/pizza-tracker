@@ -88,7 +88,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
                     // compute the mesh geometry
                     const res = computeLine( points )
 
-                    const tz  = (i/(arr.length)-0.5)*2.1
+                    const tz  = i
 
                     vertices.push( ...res.vertices.map( (x, u) => u%3 == 2 ? x+tz : x ) )
                     normals.push( ...res.normals )

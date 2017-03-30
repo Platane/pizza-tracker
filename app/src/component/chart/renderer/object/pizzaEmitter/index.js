@@ -14,6 +14,8 @@ import {
     bindUniform
 } from '../../../util/shader'
 
+// pizza spawned / ms
+const MAX_EMIT_RATE = 20 / 1000
 
 export const create = ( gl: WebGLRenderingContext ) => {
 
@@ -40,31 +42,66 @@ export const create = ( gl: WebGLRenderingContext ) => {
 
     sampler_pizza.update( texture )
 
-    let n_faces = 6
+    let n_faces = 0
+    let t = 0
+    let p = 0
+    const sources = []
+    let emitRate = 0
 
-    for(let k=10; k--;)
-        world.spawn( [Math.random()*2 + 5,Math.random()*2,Math.random()*2] )
-
-    let u = 0
+    let lastStepDate = Date.now()
 
     return {
 
+        setEmitRate: ( r:number ) => {
+            r = Math.min(r, MAX_EMIT_RATE)
+
+            if ( emitRate < 0.0001 )
+                p = t * r
+
+            else
+                p = p * ( r / emitRate )
+
+            emitRate = r
+        },
+
+        setSources: ( sources_: Array<Vec3> ) => {
+            sources.length = 0
+            sources.push( ...sources_ )
+        },
+
         update: (  ) => {
 
-            world.step(20)
+            const delta = Math.min( 200, Date.now() - lastStepDate )
 
-            if ( u -- < 0 ) {
-                world.spawn( [Math.random()*0.2 + 5,Math.random()*1.2,Math.random()*0.2] )
-                u = 3
+            lastStepDate = Date.now()
+
+
+            world.step(delta)
+
+            t+= delta
+
+            const spawned = t * emitRate > p
+
+            while ( t * emitRate > p ) {
+
+                const source = sources[ Math.floor(Math.random()*sources.length) ]
+
+                if ( source )
+                    world.spawn( source )
+
+                p++
             }
 
             const {uv, vertices, faces} = world.getGeometry()
 
             attribute_position.update(vertices)
-            elementIndex.update(faces)
-            attribute_uv.update(uv)
 
-            n_faces = faces.length
+            if ( spawned || true ){
+                elementIndex.update(faces)
+                attribute_uv.update(uv)
+                n_faces = faces.length
+            }
+
         },
 
         draw: ( projectionMatrix: Mat4 ) => {

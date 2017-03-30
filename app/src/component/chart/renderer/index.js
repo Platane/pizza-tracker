@@ -6,6 +6,25 @@ import {create as createFloorLabel}     from './object/floorLabel'
 import {create as createCube}           from './object/cube'
 import {create as createPizzaEmitter}   from './object/pizzaEmitter'
 
+const getYat = ( points: Arrray<Vec2>, x: number ) => {
+
+    let ia=0
+    for(; points[ia] && points[ia][0] < x; ia++ );
+
+    if (!points[ia])
+        return points[ia-1][1]
+
+    if(ia==0)
+        return points[0][1]
+
+    if (points[ia][0] == points[ia-1][0])
+        return points[ia][1]
+
+    const k = ( x - points[ia-1][0] )/( points[ia][0] - points[ia-1][0] )
+
+    return k*points[ia][1] + (1-k)*points[ia-1][1]
+}
+
 const WEBGL_OPTIONS = {
     alpha                   : true,
     antialias               : true,
@@ -187,6 +206,8 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
         requestAnimationFrame( loop )
     }
 
+    let lines = []
+
     return {
 
         setCamera: ( _: any, x: number, y: number ) => { tx = x; ty = y },
@@ -195,9 +216,24 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
             k = u
             renderers.lines.setK( u )
             renderers.cube.setK( u )
+
+            renderers.pizzaEmitter.setEmitRate( k / 500 )
+            renderers.pizzaEmitter.setSources(
+                lines
+                    .map( ({ points }, i) =>
+                        [
+                            k,
+                            getYat( points, k ),
+                            i,
+                        ]
+                    )
+            )
         },
 
-        setLines: renderers.lines.setLines,
+        setLines: ( lines_ ) => {
+            lines = lines_
+            renderers.lines.setLines( lines_ )
+        },
 
         setRunning: ( value: boolean ) => {
             if ( value == running )
