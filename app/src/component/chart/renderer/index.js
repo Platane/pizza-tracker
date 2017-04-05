@@ -3,10 +3,11 @@ import {mat4, vec3}             from 'gl-matrix'
 import {create as createLineRenderer}   from './object/line'
 import {create as createFloor}          from './object/floor'
 import {create as createFloorLabel}     from './object/floorLabel'
+import {create as createVerticalLabel}  from './object/verticalLabel'
 import {create as createCube}           from './object/cube'
 import {create as createPizzaEmitter}   from './object/pizzaEmitter'
 
-const getYat = ( points: Arrray<Vec2>, x: number ) => {
+const getYat = ( points: Array<Vec2>, x: number ) => {
 
     let ia=0
     for(; points[ia] && points[ia][0] < x; ia++ );
@@ -166,6 +167,7 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
         lines           : createLineRenderer( gl ),
         floor           : createFloor( gl ),
         floorLabel      : createFloorLabel( gl ),
+        verticalLabel   : createVerticalLabel( gl ),
         cube            : createCube( gl ),
         pizzaEmitter    : createPizzaEmitter( gl ),
     }
@@ -181,6 +183,7 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
             renderers.lines,
             renderers.floor,
             renderers.floorLabel,
+            renderers.verticalLabel,
             renderers.cube,
             renderers.pizzaEmitter,
         ].forEach( ({ draw }) =>
@@ -216,6 +219,15 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
             k = u
             renderers.lines.setK( u )
             renderers.cube.setK( u )
+
+            renderers.verticalLabel.setValues(
+                lines
+                    .map( ({ points, values }) =>
+                        ({ y: getYat( points, k ), v: getYat( values, k ) })
+                    )
+                ,
+                k
+            )
 
             renderers.pizzaEmitter.setEmitRate( k / 500 )
             renderers.pizzaEmitter.setSources(

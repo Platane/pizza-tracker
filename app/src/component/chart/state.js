@@ -33,21 +33,30 @@ export const statify = ( C: Component<void, PropsOut, {}> ) =>
 
         const lines = users.map( ({ counts }, i) => {
 
-            let points = counts.map( ({ date, count }) =>
+            let values = counts.map( ({ date, count }) =>
                 vec2.set(
                     vec2.create(),
-                    (date - start)/( end - start )*12, count/_max*3
+                    (date - start)/( end - start )*12, count
                 )
             )
 
-            if ( points.length == 1 )
-                points = [ ...points, vec2.set( vec2.create(), points[0][0]+0.1, points[0][1] ) ]
+            if ( values.length == 1 )
+                values = [ ...values, vec2.set( vec2.create(), values[0][0]+0.1, values[0][1] ) ]
 
 
             const color         = colors[i%colors.length]
             const dash_start    = ( now-start )/( end-start )*12
 
+            const points = values
+                .map( p =>
+                    vec2.set(
+                        vec2.create(),
+                        p[0], p[1]/_max*3
+                    )
+                )
+
             return {
+                values,
                 points,
                 color,
                 dash_start,

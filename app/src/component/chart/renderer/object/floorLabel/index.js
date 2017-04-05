@@ -15,6 +15,7 @@ import {
 const FLOOR_WIDTH   = 5
 const FLOOR_LENGTH  = 1
 const LABEL_WIDTH   = 1.15
+const LABEL_ANGLE   = 1
 
 const vertices      = []
 const faces         = []
@@ -25,10 +26,10 @@ for( let i=12; i--; ) {
     const m = (1-LABEL_WIDTH)/2
 
     vertices.push(
-        0.1 + (i + m  )*FLOOR_LENGTH, -0.05, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05 + LABEL_WIDTH*FLOOR_LENGTH/3*0 ,
-        0.1 + (i + 1-m)*FLOOR_LENGTH, -0.05, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05 + LABEL_WIDTH*FLOOR_LENGTH/3*0 ,
-        0.1 + (i + 1-m)*FLOOR_LENGTH, -0.05, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05 + LABEL_WIDTH*FLOOR_LENGTH/3 ,
-        0.1 + (i + m  )*FLOOR_LENGTH, -0.05, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05 + LABEL_WIDTH*FLOOR_LENGTH/3 ,
+        0.1 + (i + m  )*FLOOR_LENGTH, -0.05, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05,
+        0.1 + (i + 1-m)*FLOOR_LENGTH, -0.05, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05,
+        0.1 + (i + 1-m)*FLOOR_LENGTH, -0.05 - Math.sin(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05 + Math.cos(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3,
+        0.1 + (i + m  )*FLOOR_LENGTH, -0.05 - Math.sin(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05 + Math.cos(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3,
     )
 
     faces.push(
@@ -52,7 +53,7 @@ const monthLabel_texture = document.createElement('canvas')
     monthLabel_texture.height = h*12
     const ctx: CanvasRenderingContext2D = monthLabel_texture.getContext('2d')
 
-    ctx.fillStyle = 'rgba(255,255,255,0.6)'
+    ctx.fillStyle = 'rgba(255,255,255,1)'
     ctx.textBaseline = 'middle'
     ctx.textAlign = 'center'
     ctx.font = `${Math.floor(h*0.9)}px Georgia`
@@ -90,8 +91,6 @@ export const create = ( gl: WebGLRenderingContext ) => {
     const n_faces = faces.length
 
     return {
-
-        update: () => 0,
 
         draw: ( projectionMatrix: Mat4 ) => {
 

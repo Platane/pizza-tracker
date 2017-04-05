@@ -16,6 +16,7 @@ type Line = {
     color       : [number,number,number,number],
     dash_start  : number,
     points      : Array<Vec2>,
+    values      : Array<Vec2>,
 }
 
 
