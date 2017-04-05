@@ -6,13 +6,22 @@ const EMBEDDED_OPTIONS = {
     'link-color'    : '#4d107b',
 }
 
+export type Props = {
+
+    // between 250 and 550
+    width       : number,
+
+
+    tweet_id    : string,
+}
+
 export class Tweet extends React.Component {
 
     state = {
         twttr : null,
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps: Props, nextState) {
         return nextProps.tweet_id != this.props.tweet_id
             ||
             nextState.twttr != this.state.twttr
@@ -43,7 +52,7 @@ export class Tweet extends React.Component {
 
         if ( this.state.twttr && this.refs.container ) {
 
-            this.state.twttr.widgets.createTweet( this.props.tweet_id, this.refs.container, EMBEDDED_OPTIONS )
+            this.state.twttr.widgets.createTweet( this.props.tweet_id, this.refs.container, { ...EMBEDDED_OPTIONS, width: this.props.width } )
         }
     }
 

@@ -35,8 +35,8 @@ export class Chart extends React.Component {
 
     mousemove( event: MouseEvent ){
         this.setState({
-            tx  :   event.pageX / window.innerWidth - 0.5,
-            ty  :   event.pageY / window.innerHeight - 0.5,
+            tx  :   event.clientX / window.innerWidth - 0.5,
+            ty  :   event.clientY / window.innerHeight - 0.5,
         })
     }
 

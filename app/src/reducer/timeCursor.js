@@ -12,8 +12,8 @@ export const reducer = ( state: State, action: Action ) : State => {
         case 'setTimeCursor' :
             return { ...state, k: action.k }
 
-        case 'allHistoryInited' :
-            return { ...state, k: 0 }
+        // case 'allHistoryInited' :
+        //     return { ...state, k: 0 }
 
         default :
             return state || { k: 0 }

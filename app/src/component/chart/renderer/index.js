@@ -74,7 +74,9 @@ const createMatrixBuilder = () => {
 
             vec3.set( center, k, 0, 0 )
 
-            vec3.set( eye, k+Math.cos(Math.PI*2*tx)*3, 1+ty*0.5, Math.sin(Math.PI*2*tx)*3 )
+            const rho = Math.PI/2 + tx*Math.PI*0.4
+
+            vec3.set( eye, k+Math.cos(rho)*3, 1+ty*0.5, Math.sin(rho)*3 )
 
 
             // build the base u,v,w
@@ -168,8 +170,8 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
         floor           : createFloor( gl ),
         floorLabel      : createFloorLabel( gl ),
         verticalLabel   : createVerticalLabel( gl ),
-        cube            : createCube( gl ),
         pizzaEmitter    : createPizzaEmitter( gl ),
+        cube            : createCube( gl ),
     }
 
     const worldMatrix = createMatrixBuilder()
@@ -184,8 +186,8 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
             renderers.floor,
             renderers.floorLabel,
             renderers.verticalLabel,
-            renderers.cube,
             renderers.pizzaEmitter,
+            // renderers.cube,
         ].forEach( ({ draw }) =>
             draw( worldMatrix.get() )
         )
