@@ -22,9 +22,6 @@ module.exports = {
                 use : [
                     {
                         loader  : 'babel-loader',
-                        // options : {
-                            // presets: ['es2015', 'stage-1', 'react'],
-                        // }
                     },
                 ],
             },
@@ -97,7 +94,7 @@ module.exports = {
                     ,{})
             ),
 
-            [`('SIMD' in this)`] : `('SIMD' in window)`,
+            ['(\'SIMD\' in this)'] : '(\'SIMD\' in window)',
         })
     ],
 
