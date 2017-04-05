@@ -8,6 +8,7 @@ export type Props = {
     tweets  : Array<{
         tweet_id    : string,
         date        : number,
+        i           : number,
     }>
 }
 

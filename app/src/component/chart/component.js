@@ -70,6 +70,6 @@ export class Chart extends React.Component {
             // this._renderer.render()
         }
 
-        return <canvas style={style.canvas} ref="canvas" style={{border:'solid 1px #333'}} />
+        return <canvas style={style.canvas} ref="canvas" />
     }
 }

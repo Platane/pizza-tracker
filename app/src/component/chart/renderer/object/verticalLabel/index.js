@@ -13,7 +13,7 @@ import {
 
 
 const LABEL_TEXT_HEIGHT = 256 / 8
-const LABEL_HEIGHT = 0.35
+const LABEL_HEIGHT = 0.4
 const LINE_WIDTH = 0.03
 
 const vertices      = []
@@ -38,15 +38,15 @@ const updateGeometry = ( values: Array<{v:number, y:number}>, k:number ) => {
     values.forEach( ({y}, i) => {
 
         vertices.push(
-            x_offset -LABEL_HEIGHT*2 , y-LABEL_HEIGHT/2 , i,
-            x_offset                 , y-LABEL_HEIGHT/2 , i,
-            x_offset                 , y+LABEL_HEIGHT/2 , i,
-            x_offset -LABEL_HEIGHT*2 , y+LABEL_HEIGHT/2 , i,
+            x_offset -LABEL_HEIGHT*2 , y              , i,
+            x_offset                 , y              , i,
+            x_offset                 , y+LABEL_HEIGHT , i,
+            x_offset -LABEL_HEIGHT*2 , y+LABEL_HEIGHT , i,
 
             x_offset -LABEL_HEIGHT - LINE_WIDTH/2, 0                            , i,
             x_offset -LABEL_HEIGHT + LINE_WIDTH/2, 0                            , i,
-            x_offset -LABEL_HEIGHT + LINE_WIDTH/2, Math.max(0,y-LABEL_HEIGHT/2) , i,
-            x_offset -LABEL_HEIGHT - LINE_WIDTH/2, Math.max(0,y-LABEL_HEIGHT/2) , i,
+            x_offset -LABEL_HEIGHT + LINE_WIDTH/2, Math.max(0,y) , i,
+            x_offset -LABEL_HEIGHT - LINE_WIDTH/2, Math.max(0,y) , i,
 
             0, 0.01, i-LINE_WIDTH,
             k, 0.01, i-LINE_WIDTH,
@@ -93,9 +93,6 @@ const label_texture = document.createElement('canvas')
 // document.body.appendChild(label_texture)
 const updateTexture = ( values: Array<{v:number, y:number}> ) => {
 
-    const format = x =>
-        Math.floor(x)+'.'+((x%1)+'0'.repeat(10)).slice(2,4)
-
     const h = LABEL_TEXT_HEIGHT
 
     const w = 1 << Math.ceil( Math.log((values.length+1)*h) / Math.LN2 )
@@ -108,9 +105,7 @@ const updateTexture = ( values: Array<{v:number, y:number}> ) => {
 
     ctx.clearRect(0, 0, h, h*n)
     ctx.fillStyle = 'rgba(255,255,255,1)'
-    ctx.textBaseline = 'middle'
-    ctx.textAlign = 'center'
-    ctx.font = `${Math.floor(h*0.9)}px helvetica`
+
 
     ctx.fillStyle = 'rgba(0,0,0,0.1)'
     ctx.beginPath()
@@ -124,8 +119,19 @@ const updateTexture = ( values: Array<{v:number, y:number}> ) => {
 
     values.forEach( ({v}, i) => {
 
+        const a = ''+Math.floor(v)
+        const b = '.'+((v%1)+'0'.repeat(10)).slice(2,4)
+
+        ctx.textBaseline = 'bottom'
+        ctx.textAlign = 'right'
+
         ctx.beginPath()
-        ctx.fillText(format(v), h, h*(1+i+0.5-0.05), h*2)
+        ctx.font = `${Math.floor(h*0.8)}px helvetica`
+        ctx.fillText(a, h*1.06, h*(2+i), h)
+
+        ctx.beginPath()
+        ctx.font = `${Math.floor(h*0.6)}px helvetica`
+        ctx.fillText(b, h*1.9, h*(2+i-0.025), h)
 
     })
 

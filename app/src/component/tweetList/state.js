@@ -14,10 +14,11 @@ export const statify = ( C: Component<void, PropsOut, {}> ) =>
     ({ users, k }: PropsIn ) => {
 
         const tweets = [].concat(
-            ...users.map( ({counts}) =>
-                counts.map( ({date, tweet_id}) => ({date, tweet_id}) )
+            ...users.map( ({counts}, i ) =>
+                counts.map( ({date, tweet_id}) => ({date, tweet_id, i}) )
             )
         )
+            .sort( (a, b) => a.date > b.date ? 1 : -1 )
 
         return <C tweets={tweets} k={k}/>
     }
