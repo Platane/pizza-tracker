@@ -52,28 +52,28 @@ let store
 
 (( dispatch:Dispatch, users ) => {
 
-    dispatch(
-        action.initHistory([
-            {count: 0, date: (new Date('2017-01-01')).getTime(), tweet_id: 'a'},
-            {count: 1, date: (new Date('2017-02-01')).getTime(), tweet_id: 'a'},
-            {count: 2, date: (new Date('2017-02-21')).getTime(), tweet_id: 'a'},
-            {count: 2.4, date: (new Date('2017-03-01')).getTime(), tweet_id: 'a'},
-            {count: 2.7, date: (new Date('2017-03-21')).getTime(), tweet_id: 'a'},
-            {count: 3, date: (new Date('2017-07-01')).getTime(), tweet_id: 'a'},
-            {count: 4, date: (new Date('2017-07-11')).getTime(), tweet_id: 'a'},
-            {count: 6, date: (new Date('2017-07-21')).getTime(), tweet_id: 'a'},
-            {count: 9, date: (new Date('2017-08-21')).getTime(), tweet_id: 'a'},
-        ], 'tim' )
-    )
-
-    // dispatch( action.allHistoryInited() )
-
-    dispatch(
-        action.initHistory([
-            {count: 1, date: (new Date('2017-01-01')).getTime(), tweet_id: 'a'},
-            {count: 7, date: (new Date('2017-10-01')).getTime(), tweet_id: 'a'},
-        ], 'jim' )
-    )
+    // dispatch(
+    //     action.initHistory([
+    //         {count: 0, date: (new Date('2017-01-01')).getTime()},
+    //         {count: 1, date: (new Date('2017-02-01')).getTime()},
+    //         {count: 2, date: (new Date('2017-02-21')).getTime()},
+    //         {count: 2.4, date: (new Date('2017-03-01')).getTime()},
+    //         {count: 2.7, date: (new Date('2017-03-21')).getTime()},
+    //         {count: 3, date: (new Date('2017-07-01')).getTime()},
+    //         {count: 4, date: (new Date('2017-07-11')).getTime()},
+    //         {count: 6, date: (new Date('2017-07-21')).getTime()},
+    //         {count: 9, date: (new Date('2017-08-21')).getTime()},
+    //     ], 'tim' )
+    // )
+    //
+    // // dispatch( action.allHistoryInited() )
+    //
+    // dispatch(
+    //     action.initHistory([
+    //         {count: 1, date: (new Date('2017-01-01')).getTime()},
+    //         {count: 7, date: (new Date('2017-10-01')).getTime()},
+    //     ], 'jim' )
+    // )
 
     Promise.all(
         users
@@ -91,6 +91,8 @@ let store
                     })
                     .filter( Boolean )
                     .sort( (a, b) => a.date > b.date ? 1 : -1 )
+
+                // counts.unshift({ date: (new Date('2017-01-01')).getTime(), count: 0 })
 
                 dispatch( action.initHistory( counts, userName ) )
             })

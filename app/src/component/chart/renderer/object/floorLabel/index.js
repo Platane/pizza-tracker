@@ -56,7 +56,7 @@ const monthLabel_texture = document.createElement('canvas')
     ctx.fillStyle = 'rgba(255,255,255,1)'
     ctx.textBaseline = 'middle'
     ctx.textAlign = 'center'
-    ctx.font = `${Math.floor(h*0.9)}px Georgia`
+    ctx.font = `${Math.floor(h*0.9)}px helvetica`
 
     for( let i=0; i < 12; i++) {
         const literalMonth = (new Date(`2017/${i+1}/10`)).toString().slice(4,7)

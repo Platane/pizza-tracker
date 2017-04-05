@@ -12,10 +12,6 @@ export const App = () =>
                 <Chart now={Date.now()}/>
             </div>
 
-            <div className={style.slider}>
-                <TimeSlider />
-            </div>
-
             <div className={style.tweetList}>
                 <TweetList />
             </div>

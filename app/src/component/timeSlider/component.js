@@ -8,5 +8,5 @@ export type Props = {
 
 export const TimeSlider = ({ value, set }: Props) =>
     <div className={style.container}>
-        <input type="range" min={0} max={12} step={0.001} value={value} onChange={ e => set(+e.target.value) } />
+        <input className={style.input} type="range" min={0} max={3} step={0.001} value={value} onChange={ e => set(+e.target.value) } />
     </div>

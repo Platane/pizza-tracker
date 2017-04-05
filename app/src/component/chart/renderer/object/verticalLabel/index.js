@@ -38,15 +38,15 @@ const updateGeometry = ( values: Array<{v:number, y:number}>, k:number ) => {
     values.forEach( ({y}, i) => {
 
         vertices.push(
-            x_offset -LABEL_HEIGHT*2 , y              , i,
-            x_offset                 , y              , i,
-            x_offset                 , y+LABEL_HEIGHT , i,
-            x_offset -LABEL_HEIGHT*2 , y+LABEL_HEIGHT , i,
+            x_offset -LABEL_HEIGHT*2 , y              , i-0.1,
+            x_offset                 , y              , i-0.1,
+            x_offset                 , y+LABEL_HEIGHT , i-0.1,
+            x_offset -LABEL_HEIGHT*2 , y+LABEL_HEIGHT , i-0.1,
 
-            x_offset -LABEL_HEIGHT - LINE_WIDTH/2, 0                            , i,
-            x_offset -LABEL_HEIGHT + LINE_WIDTH/2, 0                            , i,
-            x_offset -LABEL_HEIGHT + LINE_WIDTH/2, Math.max(0,y) , i,
-            x_offset -LABEL_HEIGHT - LINE_WIDTH/2, Math.max(0,y) , i,
+            x_offset -LABEL_HEIGHT - LINE_WIDTH/2, 0             , i-0.1,
+            x_offset -LABEL_HEIGHT + LINE_WIDTH/2, 0             , i-0.1,
+            x_offset -LABEL_HEIGHT + LINE_WIDTH/2, Math.max(0,y) , i-0.1,
+            x_offset -LABEL_HEIGHT - LINE_WIDTH/2, Math.max(0,y) , i-0.1,
 
             0, 0.01, i-LINE_WIDTH,
             k, 0.01, i-LINE_WIDTH,

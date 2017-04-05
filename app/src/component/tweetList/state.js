@@ -19,7 +19,7 @@ export const statify = ( C: Component<void, PropsOut, {}> ) =>
             )
         )
             .sort( (a, b) => a.date > b.date ? 1 : -1 )
-            .filter( x => x.tweet_id != 'a' )
+            .filter( x => x.tweet_id )
 
-        return <C tweets={tweets} k={k}/>
+        return <C tweets={tweets} k={k} width={340}/>
     }
