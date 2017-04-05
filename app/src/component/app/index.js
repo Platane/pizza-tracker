@@ -1,6 +1,7 @@
 import React                    from 'react'
 import {Chart}                  from '../chart'
 import {TimeSlider}             from '../timeSlider'
+import {TweetList}              from '../tweetList'
 import style                    from './style.css'
 
 export const App = () =>
@@ -11,6 +12,10 @@ export const App = () =>
 
         <div className={style.slider}>
             <TimeSlider />
+        </div>
+
+        <div className={style.tweetList}>
+            <TweetList />
         </div>
 
     </div>

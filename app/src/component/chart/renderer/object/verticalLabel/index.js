@@ -12,7 +12,7 @@ import {
 } from '../../../util/shader'
 
 
-const LABEL_TEXT_HEIGHT = 512 / 8
+const LABEL_TEXT_HEIGHT = 256 / 8
 const LABEL_HEIGHT = 0.35
 const LINE_WIDTH = 0.03
 
@@ -47,14 +47,22 @@ const updateGeometry = ( values: Array<{v:number, y:number}>, k:number ) => {
             x_offset -LABEL_HEIGHT + LINE_WIDTH/2, 0                            , i,
             x_offset -LABEL_HEIGHT + LINE_WIDTH/2, Math.max(0,y-LABEL_HEIGHT/2) , i,
             x_offset -LABEL_HEIGHT - LINE_WIDTH/2, Math.max(0,y-LABEL_HEIGHT/2) , i,
+
+            0, 0.01, i-LINE_WIDTH,
+            k, 0.01, i-LINE_WIDTH,
+            k, 0.01, i+LINE_WIDTH,
+            0, 0.01, i+LINE_WIDTH,
         )
 
         faces.push(
-            i*8+1, i*8+2, i*8+3,
-            i*8+3, i*8+1, i*8+0,
+            i*12+1, i*12+2, i*12+3,
+            i*12+3, i*12+1, i*12+0,
 
-            i*8+5, i*8+6, i*8+7,
-            i*8+7, i*8+5, i*8+4,
+            i*12+5, i*12+6, i*12+7,
+            i*12+7, i*12+5, i*12+4,
+
+            i*12+9, i*12+10, i*12+11,
+            i*12+11, i*12+9, i*12+8,
         )
 
         uvs.push(
@@ -67,6 +75,11 @@ const updateGeometry = ( values: Array<{v:number, y:number}>, k:number ) => {
             0.25 , (0.5)/n,
             0.25 , (0.5)/n,
             0.25 , (0.5)/n,
+
+            0.75 , (0.5)/n,
+            0.75 , (0.5)/n,
+            0.75 , (0.5)/n,
+            0.75 , (0.5)/n,
         )
 
 
@@ -77,7 +90,7 @@ const updateGeometry = ( values: Array<{v:number, y:number}>, k:number ) => {
 
 
 const label_texture = document.createElement('canvas')
-document.body.appendChild(label_texture)
+// document.body.appendChild(label_texture)
 const updateTexture = ( values: Array<{v:number, y:number}> ) => {
 
     const format = x =>
@@ -99,8 +112,14 @@ const updateTexture = ( values: Array<{v:number, y:number}> ) => {
     ctx.textAlign = 'center'
     ctx.font = `${Math.floor(h*0.9)}px helvetica`
 
+    ctx.fillStyle = 'rgba(0,0,0,0.1)'
     ctx.beginPath()
-    ctx.rect(0,0,h,h)
+    ctx.rect(h,0,h,h*0.9)
+    ctx.fill()
+
+    ctx.fillStyle = 'rgba(255,255,255,1)'
+    ctx.beginPath()
+    ctx.rect(0,0,h,h*0.9)
     ctx.fill()
 
     values.forEach( ({v}, i) => {
