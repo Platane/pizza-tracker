@@ -71,7 +71,7 @@ const computePosition = ({ tweets, k }: Props) => {
         })
 }
 
-const TweetList_ = ({ tweets, width }) => console.log( tweets.map( x => x.s) ) ||
+const TweetList_ = ({ tweets, width }) =>
     <div className={style.container}>
         { tweets
             .map( ({ tweet_id, y, s }) =>
@@ -84,7 +84,7 @@ const TweetList_ = ({ tweets, width }) => console.log( tweets.map( x => x.s) ) |
                         transform   : `translate3d(0,${Math.round((y+1)*200)}px,${s}px) scale(${s}) rotateX(${(-y)*30}deg)`
                     }}>
 
-                    <div className={style.overlay} style={{ opacity: (1-s) }} />
+                    { s < 0.9 && <div className={style.overlay} style={{ opacity: (1-s) }} /> }
 
                     <Tweet tweet_id={tweet_id} width={width} />
                 </div>
