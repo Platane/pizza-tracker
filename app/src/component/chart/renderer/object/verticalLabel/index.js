@@ -12,7 +12,7 @@ import {
 } from '../../../util/shader'
 
 
-const LABEL_TEXT_HEIGHT = 256 / 8
+const LABEL_TEXT_HEIGHT = 512 / 8
 const LABEL_HEIGHT = 0.4
 const LINE_WIDTH = 0.03
 
@@ -33,20 +33,21 @@ const updateGeometry = ( values: Array<{v:number, y:number}>, k:number ) => {
 
     const n = w / h
 
-    const x_offset = Math.max( k*0.8 - 2, 0 )
+    // const x_offset = Math.max( k*0.8 - 2, 0 )
+    const x_offset = k + LABEL_HEIGHT
 
     values.forEach( ({y}, i) => {
 
         vertices.push(
-            x_offset -LABEL_HEIGHT*2 , y              , i-0.1,
-            x_offset                 , y              , i-0.1,
-            x_offset                 , y+LABEL_HEIGHT , i-0.1,
-            x_offset -LABEL_HEIGHT*2 , y+LABEL_HEIGHT , i-0.1,
+            x_offset -LABEL_HEIGHT*2 , y              , i-0.2,
+            x_offset                 , y              , i-0.2,
+            x_offset                 , y+LABEL_HEIGHT , i-0.2,
+            x_offset -LABEL_HEIGHT*2 , y+LABEL_HEIGHT , i-0.2,
 
-            x_offset -LABEL_HEIGHT - LINE_WIDTH/2, 0             , i-0.1,
-            x_offset -LABEL_HEIGHT + LINE_WIDTH/2, 0             , i-0.1,
-            x_offset -LABEL_HEIGHT + LINE_WIDTH/2, Math.max(0,y) , i-0.1,
-            x_offset -LABEL_HEIGHT - LINE_WIDTH/2, Math.max(0,y) , i-0.1,
+            x_offset -LABEL_HEIGHT - LINE_WIDTH/2, 0             , i-0.2,
+            x_offset -LABEL_HEIGHT + LINE_WIDTH/2, 0             , i-0.2,
+            x_offset -LABEL_HEIGHT + LINE_WIDTH/2, Math.max(0,y) , i-0.2,
+            x_offset -LABEL_HEIGHT - LINE_WIDTH/2, Math.max(0,y) , i-0.2,
 
             0, 0.01, i-LINE_WIDTH,
             k, 0.01, i-LINE_WIDTH,

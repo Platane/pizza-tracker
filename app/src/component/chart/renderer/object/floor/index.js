@@ -20,10 +20,10 @@ const faces         = []
 for( let i=6; i--; ) {
 
     vertices.push(
-        0.1 + (i*2+0)*FLOOR_LENGTH, -0.05,  FLOOR_WIDTH/2,
-        0.1 + (i*2+1)*FLOOR_LENGTH, -0.05,  FLOOR_WIDTH/2,
-        0.1 + (i*2+1)*FLOOR_LENGTH, -0.05, -FLOOR_WIDTH/2,
-        0.1 + (i*2+0)*FLOOR_LENGTH, -0.05, -FLOOR_WIDTH/2,
+        0.1 + (i*2+0)*FLOOR_LENGTH, 0,  FLOOR_WIDTH/2,
+        0.1 + (i*2+1)*FLOOR_LENGTH, 0,  FLOOR_WIDTH/2,
+        0.1 + (i*2+1)*FLOOR_LENGTH, 0, -FLOOR_WIDTH/2,
+        0.1 + (i*2+0)*FLOOR_LENGTH, 0, -FLOOR_WIDTH/2,
     )
 
     faces.push(

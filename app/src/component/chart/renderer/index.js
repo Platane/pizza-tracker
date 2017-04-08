@@ -26,6 +26,8 @@ const getYat = ( points: Array<Vec2>, x: number ) => {
     return k*points[ia][1] + (1-k)*points[ia-1][1]
 }
 
+let gi = vec3.create()
+
 const WEBGL_OPTIONS = {
     alpha                   : true,
     antialias               : true,
@@ -39,9 +41,9 @@ const WEBGL_OPTIONS = {
 const createMatrixBuilder = () => {
 
     const near  = 0.4
-    const far   = 10
+    const far   = 100
 
-    let fovx    = 90
+    let fovx    = Math.PI/2.2
     let aspect  = 1
 
     const up                = vec3.fromValues(0, -1, 0)
@@ -70,18 +72,15 @@ const createMatrixBuilder = () => {
 
         build: ( k:number, tx:number, ty:number ) => {
 
-            const a = 0.19
+            vec3.set( center, k, 2, 2 )
 
-            vec3.set( center, k, 0, 0 )
+            const rho = -Math.PI/2 + tx*Math.PI*0.4
+            const phy = -ty*Math.PI*0.4
+            const r   = 4
 
-            const rho = Math.PI/2 + tx*Math.PI*0.4
-
-            vec3.set( eye, k+Math.cos(rho)*3, 1+ty*0.5, Math.sin(rho)*3 )
-
+            vec3.set( w, Math.cos(phy)*Math.cos(rho), Math.sin(phy), Math.cos(phy)*Math.sin(rho) )
 
             // build the base u,v,w
-            vec3.sub( w, center, eye )
-            vec3.normalize( w, w )
 
             vec3.cross( u, up, w )
             vec3.normalize( u, u )
@@ -94,28 +93,40 @@ const createMatrixBuilder = () => {
                 lookAtMatrix,
                 u[0]    , u[1]    , u[2]    , 0,
                 v[0]    , v[1]    , v[2]    , 0,
-                w[0]    , w[1]    , w[2]    , 0,
-                // 0      , 0      , 0      , 1,
+                -w[0]   , -w[1]   , -w[2]   , 0,
+                0       , 0       , 0       , 1,
                 // eye[0] , eye[1] , eye[2] , 1,
                 // -eye[0] , -eye[1] , -eye[2] , 1,
-                center[0]*a , center[1]*a , center[2]*a , 1,
+                // center[0]*a , center[1]*a , center[2]*a , 1,
             )
 
+            vec3.copy(gi, eye)
 
             // mat4.lookAt( lookAtMatrix, eye, center, up )
 
 
             mat4.invert( lookAtMatrix, lookAtMatrix )
 
+            // const m = mat4.multiply(mat4.create(), mat4.fromTranslation( mat4.create(), vec3.fromValues(-6, 0, 10) ), frustrumMatrix)
+            // const m = mat4.multiply(mat4.create(), frustrumMatrix, mat4.fromTranslation( mat4.create(), vec3.fromValues(-6, -2, -5) ))
+            //
+            //
+            const m = mat4.identity(mat4.create())
+
+            mat4.multiply(m, m, frustrumMatrix )
+            // mat4.multiply(m, m, mat4.fromTranslation( mat4.create(), eye ))
+            mat4.multiply(m, m, mat4.fromTranslation( mat4.create(), [0,0,-r] ))
+            mat4.multiply(m, m, lookAtMatrix)
+            mat4.multiply(m, m, mat4.fromTranslation( mat4.create(), [-center[0], -center[1], -center[2]] ))
 
 
-            const scale = mat4.fromScaling( mat4.create(), vec3.fromValues(a, a, a) )
+            // const scale = mat4.fromScaling( mat4.create(), vec3.fromValues(a, a, a) )
 
-            const m = mat4.mul(
-                mat4.create(),
-                lookAtMatrix,
-                scale
-            )
+            // const m = mat4.mul(
+            //     mat4.create(),
+            //     lookAtMatrix,
+            //     scale
+            // )
 
             // const m = mat4.mul(
             //     mat4.create(),
@@ -139,9 +150,7 @@ const createMatrixBuilder = () => {
     }
 }
 
-export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
-
-    canvas.width = canvas.height = size
+export const create = ( canvas: HTMLCanvasElement  ) => {
 
     const gl: ?WebGLRenderingContext = canvas.getContext('webgl2', WEBGL_OPTIONS)
         || canvas.getContext('webgl-experimental2', WEBGL_OPTIONS)
@@ -153,7 +162,7 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
 
 
     gl.clearColor(0.5, 0.5, 0.5, 0.0)
-    gl.viewport(0, 0, size, size)
+    gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight)
 
     gl.cullFace(gl.FRONT_AND_BACK)
 
@@ -187,7 +196,7 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
             renderers.floorLabel,
             renderers.verticalLabel,
             renderers.pizzaEmitter,
-            // renderers.cube,
+            renderers.cube,
         ].forEach( ({ draw }) =>
             draw( worldMatrix.get() )
         )
@@ -203,6 +212,8 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
         if ( !running )
             return
 
+        renderers.cube.setPosition( gi )
+
         worldMatrix.build( k, tx, ty )
         renderers.pizzaEmitter.update()
 
@@ -215,12 +226,22 @@ export const create = ( canvas: HTMLCanvasElement, size: number = 600  ) => {
 
     return {
 
+        resize: () => {
+
+            canvas.width = canvas.clientWidth
+            canvas.height = canvas.clientHeight
+
+            gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight)
+
+            worldMatrix.setRatio(canvas.clientWidth / canvas.clientHeight)
+        },
+
         setCamera: ( _: any, x: number, y: number ) => { tx = x; ty = y },
 
         setK: ( u: number ) => {
             k = u
             renderers.lines.setK( u )
-            renderers.cube.setK( u )
+            renderers.cube.setPosition( gi )
 
             renderers.verticalLabel.setValues(
                 lines

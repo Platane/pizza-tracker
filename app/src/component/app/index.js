@@ -12,8 +12,10 @@ export const App = () =>
                 <Chart now={Date.now()}/>
             </div>
 
-            <div className={style.tweetList}>
-                <TweetList />
+            <div className={style.tweetListWrapper}>
+                <div className={style.tweetList}>
+                    <TweetList />
+                </div>
             </div>
 
             <ScrollSpy />

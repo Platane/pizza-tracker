@@ -25,7 +25,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
     const world = createWorld()
 
     // init sprite
-    const texture = createPool( 128/n, n )
+    const texture = createPool( 256/n, n )
 
     // Create the shader program
     const program = createProgram( gl, vertexShaderSource, fragmentShaderSource )

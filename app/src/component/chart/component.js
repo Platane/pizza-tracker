@@ -29,24 +29,33 @@ export class Chart extends React.Component {
         super()
 
         this.state = { tx:0, ty:0 }
-
-        this.mousemove = this.mousemove.bind(this)
     }
 
-    mousemove( event: MouseEvent ){
+    onmousemove = ( event: MouseEvent ) => {
         this.setState({
             tx  :   event.clientX / window.innerWidth - 0.5,
             ty  :   event.clientY / window.innerHeight - 0.5,
         })
     }
 
+    onresize = () => {
+
+        this._renderer && this._renderer.resize()
+    }
+
     componentDidMount() {
 
-        document.addEventListener('mousemove', this.mousemove)
+        window.removeEventListener('resize', this.onresize)
+        document.removeEventListener('mousemove', this.onmousemove)
+
+        document.addEventListener('mousemove', this.onmousemove)
+        window.addEventListener('resize', this.onresize)
 
         if ( !this._renderer ){
 
-            this._renderer = createRenderer( this.refs.canvas, 700 )
+            this._renderer = createRenderer( this.refs.canvas )
+
+            this.onresize()
 
             this.forceUpdate()
         }
@@ -54,7 +63,8 @@ export class Chart extends React.Component {
 
     componentWillUnmount() {
 
-        document.removeEventListener('mousemove', this.mousemove)
+        window.removeEventListener('resize', this.onresize)
+        document.removeEventListener('mousemove', this.onmousemove)
     }
 
 
@@ -70,6 +80,6 @@ export class Chart extends React.Component {
             // this._renderer.render()
         }
 
-        return <canvas style={style.canvas} ref="canvas" />
+        return <canvas className={style.canvas} ref="canvas" />
     }
 }

@@ -1,7 +1,7 @@
 import fragmentShaderSource     from './fragment_fs.glsl'
 import vertexShaderSource       from './vertex_vs.glsl'
 
-import type {Mat4}              from 'gl-matrix'
+import type {Mat4, Vec3}        from 'gl-matrix'
 
 import {
     createProgram,
@@ -60,14 +60,10 @@ export const create = ( gl: WebGLRenderingContext ) => {
 
     return {
 
-        setK: ( k: number ) => {
+        setPosition: ( pos: Vec3 ) => {
 
             const v = vertices
-                .map( (x,i) =>
-                    (i%3)==0
-                        ? k + x*0.2
-                        : x*0.2
-                )
+                .map( (x,i) => x*0.2 + pos[i%3] )
 
             attribute_position.update( v )
         },
