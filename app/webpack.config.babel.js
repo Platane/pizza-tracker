@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-
 const production = 'production' == process.env.NODE_ENV
 
 module.exports = {
@@ -22,6 +21,16 @@ module.exports = {
                 use : [
                     {
                         loader  : 'babel-loader',
+                        options : production
+                        ? {
+                            presets : [ 'react', 'es2017', 'flow', 'babili' ],
+                            plugins : [
+                                'transform-class-properties',
+                                ['transform-es2015-modules-commonjs', {'allowTopLevelThis': true}],
+                                'transform-object-rest-spread'
+                            ]
+                        }
+                        : {}
                     },
                 ],
             },
@@ -79,10 +88,7 @@ module.exports = {
 
     plugins : [
 
-        new webpack.DefinePlugin({
-
-            // env var
-            ...(
+        new webpack.DefinePlugin(
                 [
                     'NODE_ENV',
                     'SOURCE_URL',
@@ -92,11 +98,8 @@ module.exports = {
                             ? o
                             : { ...o, [ 'process.env.'+name ] : `'${ process.env[ name ] }'`}
                     ,{})
-            ),
-
-            ['(\'SIMD\' in this)'] : '(\'SIMD\' in window)',
-        })
+        )
     ],
 
-    devtool : 'source-map',
+    devtool : production ? false : 'source-map',
 }
