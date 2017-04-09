@@ -51,6 +51,13 @@ build-deploy-app:
 
         - script:
             cwd: app
+            name: install dependencies
+            code: |
+                export YARN_CACHE=$WERCKER_CACHE_DIR/yarn
+                HOME=$YARN_CACHE yarn --pure-lockfile
+
+        - script:
+            cwd: app
             name: build
             code: npm run build
 
