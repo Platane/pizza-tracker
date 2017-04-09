@@ -72,7 +72,7 @@ export const createWorld = () => {
 
                     // ground collision
                     if (
-                        e.p[1] < e.size
+                        e.p[1] < e.size * 0.9
                         // &&
                         // Math.abs(e.p[2]) < 2.5
                         // &&
@@ -101,16 +101,27 @@ export const createWorld = () => {
 
             entities.forEach( ( { size, n, p, v, age }, i ) => {
 
+
+                const fade = 0.05
+                const o = 1-Math.max(0, (age - MAX_AGE*(1-fade))/(MAX_AGE*fade) )
+
+                opacities.push( o,o,o,o )
+
+                const sk = 1 - Math.min(p[1], 2)/ 2
+                const os = o * sk
+
+                opacities.push( os,os,os,os )
+
                 vertices.push(
                     p[0]-size, p[1]-size, p[2],
                     p[0]+size, p[1]-size, p[2],
                     p[0]+size, p[1]+size, p[2],
                     p[0]-size, p[1]+size, p[2],
 
-                    p[0]-size, 0.001*i, p[2]-size,
-                    p[0]+size, 0.001*i, p[2]-size,
-                    p[0]+size, 0.001*i, p[2]+size,
-                    p[0]-size, 0.001*i, p[2]+size,
+                    p[0]-size*sk, 0.001*i, p[2]-size*sk,
+                    p[0]+size*sk, 0.001*i, p[2]-size*sk,
+                    p[0]+size*sk, 0.001*i, p[2]+size*sk,
+                    p[0]-size*sk, 0.001*i, p[2]+size*sk,
                 )
 
                 faces.push(
@@ -126,14 +137,7 @@ export const createWorld = () => {
                     ...uvTable[0],
                 )
 
-                const fade = 0.05
-                const o = 1-Math.max(0, (age - MAX_AGE*(1-fade))/(MAX_AGE*fade) )
 
-                opacities.push( o,o,o,o )
-
-                const os = o * ( 1 - Math.min(p[1], 1)/ 1 )
-
-                opacities.push( os,os,os,os )
             })
 
 

@@ -58,11 +58,10 @@ export const create = ( gl: WebGLRenderingContext ) => {
         setEmitRate: ( r:number ) => {
             r = Math.min(r, MAX_EMIT_RATE)
 
-            if ( emitRate < 0.0001 )
-                p = t * r - ( 300 * r )
+            const target = Math.min( 0, t * emitRate - p )
 
-            else
-                p = p * ( r / emitRate )
+            p = 0
+            t = r > 0 ? target / r : 0
 
             emitRate = r
         },

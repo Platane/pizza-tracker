@@ -69,7 +69,7 @@ const createMatrixBuilder = () => {
 
         build: ( k:number, tx:number, ty:number ) => {
 
-            vec3.set( center, k, 2, 2 )
+            vec3.set( center, 1+k/12*10, 2, 2 )
 
             const rho = -Math.PI/2 + tx*Math.PI*0.3 + Math.PI*(6-k)/12*0.23
             const phy = Math.PI*0.065 -ty*Math.PI*0.2 + Math.PI*k/12*0.12
@@ -178,7 +178,6 @@ export const create = ( canvas: HTMLCanvasElement  ) => {
             return
 
         worldMatrix.build( k, tx, ty )
-        renderers.pizzaEmitter.update()
 
         vk = Math.floor(vk*0.98  *100)/100
 
@@ -186,6 +185,8 @@ export const create = ( canvas: HTMLCanvasElement  ) => {
 
         renderers.pizzaEmitter.setEmitRate( ( 2+u*40 ) / 1000 )
         renderers.pizzaEmitter.setV0( vec3.set(v0, u*1.7, u*1, 0), vec3.set(v0Noise, 0.8+u*5, 0.5+u*3.7, 1.2+u*3) )
+
+        renderers.pizzaEmitter.update()
 
         render()
 
