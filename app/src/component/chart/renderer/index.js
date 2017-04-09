@@ -240,6 +240,10 @@ export const create = ( canvas: HTMLCanvasElement  ) => {
         },
 
         setLines: ( lines_ ) => {
+
+            if ( lines == lines_ )
+                return
+
             lines = lines_
             renderers.lines.setLines( lines_ )
         },
