@@ -5,12 +5,14 @@
     height              : 100%;
     perspective         : 2000px;
     perspective-origin  : 100px 300px;
+    transform-style     : preserve-3d
 }
 .item{
     position        : absolute;
     top             : 0;
     left            : 0;
     transform-origin: center;
+    transform-style : preserve-3d
 }
 .overlay{
     z-index         : 2;

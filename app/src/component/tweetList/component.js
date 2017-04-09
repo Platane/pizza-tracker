@@ -79,9 +79,8 @@ const TweetList_ = ({ tweets, width }) =>
                     key={tweet_id}
                     className={style.item}
                     style={{
-                        zIndex      : Math.floor(10*s),
                         opacity     : s*2,
-                        transform   : `translate3d(0,${Math.round((y+1)*200)}px,${s}px) scale(${s}) rotateX(${(-y)*30}deg)`
+                        transform   : `translate3d(0,${Math.round((y+1)*200)}px,${s*10}px) scale(${s})`
                     }}>
 
                     { s < 0.9 && <div className={style.overlay} style={{ opacity: (1-s) }} /> }

@@ -79,9 +79,11 @@ export const createWorld = () => {
                         // Math.floor(e.p[0])%2 == 0
                     ) {
 
-                        e.p[1] = e.size
+                        e.p[1] = e.size * 0.9
                         e.v[1] = -e.v[1]*0.8
 
+                        if ( e.v[1] < 0.01 )
+                            e.v[1] = 0
                     }
                 }
             }

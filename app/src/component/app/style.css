@@ -20,6 +20,7 @@
     position        : absolute;
     width           : 350px;
     right           : 0;
+    top             : -100px;
 }
 .tweetListWrapper{
     position        : relative;

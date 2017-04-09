@@ -66,7 +66,7 @@ const monthLabel_texture = document.createElement('canvas')
         // ctx.strokeRect(0,h*i,h*3,h)
 
         ctx.beginPath()
-        ctx.fillText(literalMonth, h*1.5, h*(i+0.5-0.14), h*3)
+        ctx.fillText(literalMonth, h*1.5, h*(i+0.5-0.12), h*3)
     }
 }
 
