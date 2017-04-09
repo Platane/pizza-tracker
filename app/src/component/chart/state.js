@@ -29,11 +29,11 @@ export const statify = ( C: Component<void, PropsOut, {}> ) =>
         const end   = (new Date('2017-12-31T23:59:59.100Z')).getTime()
 
 
-        const _max  = users.reduce( (max,{counts}) => counts.reduce( (max,x) => Math.max( max, x.count ), max ), max || 0 )
+        const _max  = users.reduce( (max,{estimated_counts}) => estimated_counts.reduce( (max,x) => Math.max( max, x.count ), max ), max || 0 )
 
-        const lines = users.map( ({ counts }, i) => {
+        const lines = users.map( ({ estimated_counts }, i) => {
 
-            let values = counts.map( ({ date, count }) =>
+            let values = estimated_counts.map( ({ date, count }) =>
                 vec2.set(
                     vec2.create(),
                     (date - start)/( end - start )*12, count
@@ -51,7 +51,7 @@ export const statify = ( C: Component<void, PropsOut, {}> ) =>
                 .map( p =>
                     vec2.set(
                         vec2.create(),
-                        p[0], p[1]/_max*3
+                        p[0], p[1]/_max*12
                     )
                 )
 

@@ -72,8 +72,8 @@ const createMatrixBuilder = () => {
             vec3.set( center, k, 2, 2 )
 
             const rho = -Math.PI/2 + tx*Math.PI*0.3 + Math.PI*(6-k)/12*0.23
-            const phy = Math.PI*0.065 -ty*Math.PI*0.2
-            const r   = 4
+            const phy = Math.PI*0.065 -ty*Math.PI*0.2 + Math.PI*k/12*0.12
+            const r   = 4+k/12
 
             vec3.set( w, Math.cos(phy)*Math.cos(rho), Math.sin(phy), Math.cos(phy)*Math.sin(rho) )
 
@@ -101,7 +101,7 @@ const createMatrixBuilder = () => {
             const m = mat4.identity(worldMatrix)
 
             mat4.multiply(m, m, frustrumMatrix )
-            mat4.multiply(m, m, mat4.fromTranslation( mat4.create(), [0,0,-r] ))
+            mat4.multiply(m, m, mat4.fromTranslation( mat4.create(), [0,-k/12*1.5,-r] ))
             mat4.multiply(m, m, lookAtMatrix)
             mat4.multiply(m, m, mat4.fromTranslation( mat4.create(), [-center[0], -center[1], -center[2]] ))
 

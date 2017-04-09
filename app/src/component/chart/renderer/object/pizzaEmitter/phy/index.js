@@ -71,7 +71,13 @@ export const createWorld = () => {
                     vec3.scaleAndAdd(e.p, e.p, e.v, delta/1000)
 
                     // ground collision
-                    if ( e.p[1] < e.size ) {
+                    if (
+                        e.p[1] < e.size
+                        // &&
+                        // Math.abs(e.p[2]) < 2.5
+                        // &&
+                        // Math.floor(e.p[0])%2 == 0
+                    ) {
 
                         e.p[1] = e.size
                         e.v[1] = -e.v[1]*0.8

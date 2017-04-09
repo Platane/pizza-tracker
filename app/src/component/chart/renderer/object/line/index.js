@@ -1,9 +1,9 @@
 import fragmentShaderSource     from './fragment_fs.glsl'
 import vertexShaderSource       from './vertex_vs.glsl'
-import {mat4, vec3, vec2}       from 'gl-matrix'
+import {vec2}                   from 'gl-matrix'
 import {computeLine}            from './geometry'
 
-import type {Mat4, Vec2, Vec3}  from 'gl-matrix'
+import type {Mat4, Vec2}        from 'gl-matrix'
 
 import {
     createProgram,
@@ -38,7 +38,6 @@ export const create = ( gl: WebGLRenderingContext ) => {
     const uniform_k             = bindUniform( gl, program, 'uk', 'float' )
 
     let n_faces = 0
-    let line_x  = []
 
     return {
 
