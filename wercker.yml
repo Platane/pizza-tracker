@@ -45,3 +45,15 @@ deploy-lambda:
             name: update lambda function
             code: |
                 aws lambda update-function-code --region eu-west-1 --function-name pizza-update --zip-file fileb://bundle.zip
+
+build-deploy-app:
+    steps:
+
+        - script:
+            cwd: app
+            name: build
+            code: npm run build
+
+        - takuma7/gh-pages:
+            token: $GH_TOKEN
+            basedir: app/dist
