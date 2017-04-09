@@ -26,10 +26,10 @@ for( let i=12; i--; ) {
     const m = (1-LABEL_WIDTH)/2
 
     vertices.push(
-        0.1 + (i + m  )*FLOOR_LENGTH, -0.05, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05,
-        0.1 + (i + 1-m)*FLOOR_LENGTH, -0.05, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05,
-        0.1 + (i + 1-m)*FLOOR_LENGTH, -0.05 - Math.sin(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05 + Math.cos(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3,
-        0.1 + (i + m  )*FLOOR_LENGTH, -0.05 - Math.sin(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.05 + Math.cos(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3,
+        0.1 + (i + m  )*FLOOR_LENGTH, 0, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.005,
+        0.1 + (i + 1-m)*FLOOR_LENGTH, 0, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.005,
+        0.1 + (i + 1-m)*FLOOR_LENGTH, 0 - Math.sin(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.005 + Math.cos(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3,
+        0.1 + (i + m  )*FLOOR_LENGTH, 0 - Math.sin(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3, FLOOR_WIDTH/2 + FLOOR_WIDTH*0.005 + Math.cos(LABEL_ANGLE)*LABEL_WIDTH*FLOOR_LENGTH/3,
     )
 
     faces.push(
@@ -66,7 +66,7 @@ const monthLabel_texture = document.createElement('canvas')
         // ctx.strokeRect(0,h*i,h*3,h)
 
         ctx.beginPath()
-        ctx.fillText(literalMonth, h*1.5, h*(i+0.5-0.05), h*3)
+        ctx.fillText(literalMonth, h*1.5, h*(i+0.5-0.14), h*3)
     }
 }
 

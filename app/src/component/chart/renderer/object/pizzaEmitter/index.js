@@ -1,10 +1,10 @@
 import fragmentShaderSource     from './fragment_fs.glsl'
 import vertexShaderSource       from './vertex_vs.glsl'
-import {mat4, vec3}             from 'gl-matrix'
+import {vec3}                   from 'gl-matrix'
 import {createPool}             from './sprite'
 import {createWorld}            from './phy'
 
-import type {Mat4, Vec2, Vec3}  from 'gl-matrix'
+import type {Mat4, Vec3}        from 'gl-matrix'
 
 import {
     createProgram,
@@ -15,7 +15,7 @@ import {
 } from '../../../util/shader'
 
 // pizza spawned / ms
-const MAX_EMIT_RATE = 20 / 1000
+const MAX_EMIT_RATE = 40 / 1000
 
 export const create = ( gl: WebGLRenderingContext ) => {
 
@@ -33,6 +33,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
     // Declare the vertex attribute
     const attribute_position    = bindAttribute( gl, program, 'aVertexPosition', 3 )
     const attribute_uv          = bindAttribute( gl, program, 'aVertexUV', 2 )
+    const attribute_opacity     = bindAttribute( gl, program, 'aVertexOpacity', 1 )
 
     const elementIndex          = bindElementIndex( gl, program )
 
@@ -46,6 +47,8 @@ export const create = ( gl: WebGLRenderingContext ) => {
     let t = 0
     let p = 0
     const sources = []
+    const v0 = vec3.create()
+    const v0Noise = vec3.create()
     let emitRate = 0
 
     let lastStepDate = Date.now()
@@ -56,7 +59,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
             r = Math.min(r, MAX_EMIT_RATE)
 
             if ( emitRate < 0.0001 )
-                p = t * r
+                p = t * r - ( 300 * r )
 
             else
                 p = p * ( r / emitRate )
@@ -67,6 +70,11 @@ export const create = ( gl: WebGLRenderingContext ) => {
         setSources: ( sources_: Array<Vec3> ) => {
             sources.length = 0
             sources.push( ...sources_ )
+        },
+
+        setV0: ( v0_: Vec3, v0Noise_: Vec3 ) => {
+            vec3.copy(v0, v0_)
+            vec3.copy(v0Noise, v0Noise_)
         },
 
         update: (  ) => {
@@ -87,14 +95,15 @@ export const create = ( gl: WebGLRenderingContext ) => {
                 const source = sources[ Math.floor(Math.random()*sources.length) ]
 
                 if ( source )
-                    world.spawn( source )
+                    world.spawn( source, v0, v0Noise )
 
                 p++
             }
 
-            const {uv, vertices, faces} = world.getGeometry()
+            const {uv, vertices, faces, opacities} = world.getGeometry()
 
             attribute_position.update(vertices)
+            attribute_opacity.update(opacities)
 
             if ( spawned || true ){
                 elementIndex.update(faces)
@@ -114,6 +123,7 @@ export const create = ( gl: WebGLRenderingContext ) => {
             attribute_position.bind()
             sampler_pizza.bind()
             attribute_uv.bind()
+            attribute_opacity.bind()
             uniform_worldMatrix.bind()
 
             gl.drawElements(gl.TRIANGLES, n_faces, gl.UNSIGNED_SHORT, 0)

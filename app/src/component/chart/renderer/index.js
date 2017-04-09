@@ -26,8 +26,6 @@ const getYat = ( points: Array<Vec2>, x: number ) => {
     return k*points[ia][1] + (1-k)*points[ia-1][1]
 }
 
-let gi = vec3.create()
-
 const WEBGL_OPTIONS = {
     alpha                   : true,
     antialias               : true,
@@ -47,7 +45,6 @@ const createMatrixBuilder = () => {
     let aspect  = 1
 
     const up                = vec3.fromValues(0, -1, 0)
-    const eye               = vec3.create()
     const center            = vec3.create()
     const w                 = vec3.create()
     const v                 = vec3.create()
@@ -74,8 +71,8 @@ const createMatrixBuilder = () => {
 
             vec3.set( center, k, 2, 2 )
 
-            const rho = -Math.PI/2 + tx*Math.PI*0.4
-            const phy = -ty*Math.PI*0.4
+            const rho = -Math.PI/2 + tx*Math.PI*0.3 + Math.PI*(6-k)/12*0.23
+            const phy = Math.PI*0.065 -ty*Math.PI*0.2
             const r   = 4
 
             vec3.set( w, Math.cos(phy)*Math.cos(rho), Math.sin(phy), Math.cos(phy)*Math.sin(rho) )
@@ -95,54 +92,18 @@ const createMatrixBuilder = () => {
                 v[0]    , v[1]    , v[2]    , 0,
                 -w[0]   , -w[1]   , -w[2]   , 0,
                 0       , 0       , 0       , 1,
-                // eye[0] , eye[1] , eye[2] , 1,
-                // -eye[0] , -eye[1] , -eye[2] , 1,
-                // center[0]*a , center[1]*a , center[2]*a , 1,
             )
-
-            vec3.copy(gi, eye)
-
-            // mat4.lookAt( lookAtMatrix, eye, center, up )
 
 
             mat4.invert( lookAtMatrix, lookAtMatrix )
 
-            // const m = mat4.multiply(mat4.create(), mat4.fromTranslation( mat4.create(), vec3.fromValues(-6, 0, 10) ), frustrumMatrix)
-            // const m = mat4.multiply(mat4.create(), frustrumMatrix, mat4.fromTranslation( mat4.create(), vec3.fromValues(-6, -2, -5) ))
-            //
-            //
-            const m = mat4.identity(mat4.create())
+
+            const m = mat4.identity(worldMatrix)
 
             mat4.multiply(m, m, frustrumMatrix )
-            // mat4.multiply(m, m, mat4.fromTranslation( mat4.create(), eye ))
             mat4.multiply(m, m, mat4.fromTranslation( mat4.create(), [0,0,-r] ))
             mat4.multiply(m, m, lookAtMatrix)
             mat4.multiply(m, m, mat4.fromTranslation( mat4.create(), [-center[0], -center[1], -center[2]] ))
-
-
-            // const scale = mat4.fromScaling( mat4.create(), vec3.fromValues(a, a, a) )
-
-            // const m = mat4.mul(
-            //     mat4.create(),
-            //     lookAtMatrix,
-            //     scale
-            // )
-
-            // const m = mat4.mul(
-            //     mat4.create(),
-            //     mat4.mul(
-            //         mat4.create(),
-            //         mat4.fromTranslation( mat4.create(), vec3.fromValues(-0.8, 0, 0) ),
-            //         mat4.fromYRotation( mat4.create(), -Math.PI*0.9*tx )
-            //     ),
-            //     mat4.mul(
-            //         mat4.create(),
-            //         scale,
-            //         mat4.fromXRotation( mat4.create(), -Math.PI*0.9*ty )
-            //     )
-            // )
-
-            mat4.copy( worldMatrix, m )
 
         },
 
@@ -170,7 +131,8 @@ export const create = ( canvas: HTMLCanvasElement  ) => {
     gl.depthFunc(gl.LESS)
 
     gl.enable( gl.BLEND )
-    // gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD )
+    gl.blendEquationSeparate( gl.FUNC_ADD, gl.FUNC_ADD )
+    gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA )
     // gl.blendFuncSeparate( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA )
     // gl.disable(gl.DEPTH_TEST)
 
@@ -196,7 +158,7 @@ export const create = ( canvas: HTMLCanvasElement  ) => {
             renderers.floorLabel,
             renderers.verticalLabel,
             renderers.pizzaEmitter,
-            renderers.cube,
+            // renderers.cube,
         ].forEach( ({ draw }) =>
             draw( worldMatrix.get() )
         )
@@ -206,16 +168,24 @@ export const create = ( canvas: HTMLCanvasElement  ) => {
     let tx=0
     let ty=0
     let k=0
+    let vk=0
+    const v0 = vec3.create()
+    const v0Noise = vec3.create()
     let running = false
     const loop = () => {
 
         if ( !running )
             return
 
-        renderers.cube.setPosition( gi )
-
         worldMatrix.build( k, tx, ty )
         renderers.pizzaEmitter.update()
+
+        vk = Math.floor(vk*0.98  *100)/100
+
+        const u = Math.min(vk, 1)
+
+        renderers.pizzaEmitter.setEmitRate( ( 2+u*40 ) / 1000 )
+        renderers.pizzaEmitter.setV0( vec3.set(v0, u*1.7, u*1, 0), vec3.set(v0Noise, 0.8+u*5, 0.5+u*3.7, 1.2+u*3) )
 
         render()
 
@@ -239,9 +209,13 @@ export const create = ( canvas: HTMLCanvasElement  ) => {
         setCamera: ( _: any, x: number, y: number ) => { tx = x; ty = y },
 
         setK: ( u: number ) => {
+
+            const deltaK = Math.abs(u-k)
+
+            vk = vk + deltaK*0.8
+
             k = u
             renderers.lines.setK( u )
-            renderers.cube.setPosition( gi )
 
             renderers.verticalLabel.setValues(
                 lines
@@ -252,7 +226,6 @@ export const create = ( canvas: HTMLCanvasElement  ) => {
                 k
             )
 
-            renderers.pizzaEmitter.setEmitRate( k / 500 )
             renderers.pizzaEmitter.setSources(
                 lines
                     .map( ({ points }, i) =>
