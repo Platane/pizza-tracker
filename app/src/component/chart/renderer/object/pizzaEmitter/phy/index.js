@@ -35,7 +35,7 @@ const prepare = ( entity: Entity, p: Vec3, v0: Vec3, v0Noise: Vec3 ) : Entity =>
     entity.v    = vec3.set( entity.v, v0[0] + (Math.random()-0.5)*v0Noise[0], v0[1] + (Math.random()-0.5)*v0Noise[1], v0[2] + (Math.random()-0.5)*v0Noise[2] )
     entity.size = Math.random()*0.06+0.06
     entity.age  = Math.floor(Math.random()*50)
-    entity.n    = Math.floor(Math.random()*uvTable.length)
+    entity.n    = Math.floor(Math.random()*(uvTable.length-1)+1)
 
     return entity
 }
@@ -106,19 +106,34 @@ export const createWorld = () => {
                     p[0]+size, p[1]-size, p[2],
                     p[0]+size, p[1]+size, p[2],
                     p[0]-size, p[1]+size, p[2],
+
+                    p[0]-size, 0.001*i, p[2]-size,
+                    p[0]+size, 0.001*i, p[2]-size,
+                    p[0]+size, 0.001*i, p[2]+size,
+                    p[0]-size, 0.001*i, p[2]+size,
                 )
 
                 faces.push(
-                    i*4+0, i*4+1, i*4+2,
-                    i*4+3, i*4+0, i*4+2,
+                    i*8+0, i*8+1, i*8+2,
+                    i*8+3, i*8+0, i*8+2,
+
+                    i*8+4, i*8+5, i*8+6,
+                    i*8+7, i*8+4, i*8+6,
                 )
 
-                uv.push( ...uvTable[n] )
+                uv.push(
+                    ...uvTable[n],
+                    ...uvTable[0],
+                )
 
                 const fade = 0.05
                 const o = 1-Math.max(0, (age - MAX_AGE*(1-fade))/(MAX_AGE*fade) )
 
                 opacities.push( o,o,o,o )
+
+                const os = o * ( 1 - Math.min(p[1], 1)/ 1 )
+
+                opacities.push( os,os,os,os )
             })
 
 
