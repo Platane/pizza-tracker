@@ -3,13 +3,18 @@ import React            from 'react'
 import {connect}        from 'react-redux'
 import {setTimeCursor}  from '../../action'
 
+import {ScrollHint}     from './scrollHint'
+
 import type {State}     from '../../index'
+
 
 class ScrollSpy_ extends React.Component {
 
+    state = { firstScroll: false }
+
     onResize = () => 0
 
-    onScroll = () => {
+    onScroll = ( event: Event ) => {
 
         const domApp = document.getElementById('app')
 
@@ -23,10 +28,13 @@ class ScrollSpy_ extends React.Component {
         const k = top / ( height - window.innerHeight )
 
         this.props.setTimeCursor( Math.max(0, Math.min(12, k*12 )) )
+
+        if ( event && event.timeStamp > 1200 )
+            this.setState({ firstScroll: true })
     }
 
-    shouldComponentUpdate() {
-        return false
+    shouldComponentUpdate(_, nextState) {
+        return this.state.firstScroll != nextState.firstScroll
     }
 
     componentDidMount(){
@@ -47,7 +55,7 @@ class ScrollSpy_ extends React.Component {
     }
 
     render(){
-        return null
+        return <ScrollHint displayed={!this.state.firstScroll} />
     }
 }
 
@@ -57,7 +65,6 @@ class ScrollSpy_ extends React.Component {
 
 const mapStateToProps = ( state: State ) =>
     ({
-        k     : state.timeCursor.k,
     })
 
 const mapDispatchToProps = { setTimeCursor }

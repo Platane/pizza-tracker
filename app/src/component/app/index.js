@@ -8,6 +8,7 @@ import style                    from './style.css'
 export const App = () =>
     <div className={style.overScrollContainer}>
         <div className={style.container}>
+
             <div className={style.chart}>
                 <Chart now={Date.now()}/>
             </div>
@@ -18,7 +19,9 @@ export const App = () =>
                 </div>
             </div>
 
-            <ScrollSpy />
+            <div className={style.scrollSpy}>
+                <ScrollSpy />
+            </div>
 
         </div>
     </div>
