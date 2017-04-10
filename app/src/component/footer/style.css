@@ -1,0 +1,17 @@
+.container{
+    color       : #fff;
+    font-family : helvetica;
+    font-size   : 0.9em;
+    display     : flex;
+    flex-direction: row;
+    align-items : center;
+}
+.icon{
+    margin-left : 10px;
+    width       : 18px;
+    height      : 18px;
+    fill        : #fff;
+}
+.link{
+    color       : #19b27f;
+}

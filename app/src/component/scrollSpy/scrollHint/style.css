@@ -1,6 +1,6 @@
 .container{
-    width           : 140px;
-    height          : 140px;
+    width           : 120px;
+    height          : 120px;
 }
 .visible{}
 .transition{}
@@ -50,7 +50,6 @@
 }
 .text{
     fill            : #fff;
-    font-family     : Verdana;
     font-family     : helvetica;
     font-size       : 30;
     text-anchor     : middle;
@@ -68,6 +67,7 @@
     75%{ transform   : translate3d(0,10px,0); }
     100%{ transform  : translate3d(0,-10px,0); }
 }
+
 .mouse{
     animation       : mouseM 2000ms Infinite;
 }
@@ -75,4 +75,14 @@
     0%{ transform   : translate3d(0,-40px,0) }
     75%{ transform   : translate3d(0,-8px,0) }
     100%{ transform   : translate3d(0,-40px,0) }
+}
+
+.text{
+    animation       : textM 2000ms Infinite;
+}
+@keyframes textM {
+    0%{ transform   : translate3d(0,4px,0) }
+    70%{ transform   : translate3d(0,2px,0) }
+    75%{ transform   : translate3d(0,-6px,0) }
+    100%{ transform   : translate3d(0,4px,0) }
 }
