@@ -35,3 +35,10 @@
     justify-content : center;
     align-items     : center;
 }
+
+@media (orientation: portrait) {
+    .scrollSpy{
+        top             : auto;
+        bottom          : 60px;
+    }
+}

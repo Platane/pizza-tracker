@@ -1,6 +1,6 @@
 .container{
-    width           : 100px;
-    height          : 100px;
+    width           : 140px;
+    height          : 140px;
 }
 .visible{}
 .transition{}
@@ -27,30 +27,52 @@
         opacity     : 0;
     }
 }
+
+
+
 .shadow{
-    fill            : rgba(0,0,0,0.1);
+    fill            : rgba(0,0,0,0.3);
     animation       : shadowM 2000ms Infinite;
 }
-.arrow,
-.circle{
+@keyframes shadowM {
+    0%{ transform   : scale(0.92); }
+    75%{ transform   : scale(1); }
+    100%{ transform   : scale(0.92); }
+}
+
+.tic,
+.potato{
     fill            : none;
     stroke          : #fff;
     stroke-width    : 4;
     stroke-linecap  : round;
     stroke-linejoin : round;
 }
-
-.arrow{
-    animation       : arrowM 1000ms Infinite;
+.text{
+    fill            : #fff;
+    font-family     : Verdana;
+    font-family     : helvetica;
+    font-size       : 30;
+    text-anchor     : middle;
+    letter-spacing  : 12px;
 }
 
-@keyframes arrowM {
-    0%{ transform   : translate3d(0,-3px,0); }
-    40%{ transform   : translate3d(0,6px,0); }
-    100%{ transform   : translate3d(0,-3px,0); }
+
+.tic{
+    animation       : ticM 2000ms Infinite;
+    stroke-width    : 6;
 }
-@keyframes shadowM {
-    0%{ transform   : scale(1); }
-    20%{ transform   : scale(0.9); }
-    100%{ transform   : scale(1); }
+
+@keyframes ticM {
+    0%{ transform    : translate3d(0,-10px,0); }
+    75%{ transform   : translate3d(0,10px,0); }
+    100%{ transform  : translate3d(0,-10px,0); }
+}
+.mouse{
+    animation       : mouseM 2000ms Infinite;
+}
+@keyframes mouseM {
+    0%{ transform   : translate3d(0,-40px,0) }
+    75%{ transform   : translate3d(0,-8px,0) }
+    100%{ transform   : translate3d(0,-40px,0) }
 }
