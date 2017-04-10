@@ -69,6 +69,7 @@ const computePosition = ({ tweets, k }: Props) => {
 
             return { tweet_id, y, s:Math.round(s*100)/100 }
         })
+        .filter( ({ s }) => s > 0.01 )
 }
 
 const TweetList_ = ({ tweets, width }) =>
@@ -85,7 +86,7 @@ const TweetList_ = ({ tweets, width }) =>
 
                     { s < 0.9 && <div className={style.overlay} style={{ opacity: (1-s) }} /> }
 
-                    <Tweet tweet_id={tweet_id} width={width} />
+                    <Tweet tweet_id={ s >= 0.5 && tweet_id } width={width} />
                 </div>
             )
         }
