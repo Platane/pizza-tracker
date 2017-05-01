@@ -10,11 +10,11 @@ import type {State}     from '../../index'
 
 class ScrollSpy_ extends React.Component {
 
-    state = { firstScroll: false }
+    state = { firstScroll: false, mountDate:0 }
 
     onResize = () => 0
 
-    onScroll = ( event: Event ) => {
+    onScroll = () => {
 
         const domApp = document.getElementById('app')
 
@@ -29,7 +29,7 @@ class ScrollSpy_ extends React.Component {
 
         this.props.setTimeCursor( Math.max(0, Math.min(12, k*12 )) )
 
-        if ( event && event.timeStamp > 1200 )
+        if ( !this.state.firstScroll && this.state.mountDate && Date.now() > this.state.mountDate + 400  )
             this.setState({ firstScroll: true })
     }
 
@@ -44,6 +44,8 @@ class ScrollSpy_ extends React.Component {
 
         window.addEventListener('resize', this.onResize )
         window.addEventListener('scroll', this.onScroll )
+
+        this.setState({ mountDate: Date.now() })
 
         this.onScroll()
     }
