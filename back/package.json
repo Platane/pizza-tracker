@@ -1,30 +1,25 @@
 {
-    "name"                      : "pizza-tracker-back",
-    "version"                   : "1.0.0",
-
+    "name": "pizza-tracker-back",
+    "version": "1.0.0",
     "engines": {
-        "node"                  : ">=7.7"
+        "node": ">=7.7"
     },
-
-    "dependencies"              : {
-        "twitter"                       : "~1.7.0",
-        "regenerator-runtime"           : "~0.10.3"
+    "dependencies": {
+        "regenerator-runtime": " 0.10.5",
+        "twitter": " 1.7.0"
     },
-
-    "devDependencies"   : {
-        "babel-core"                    : "~6.24.0",
-        "babel-cli"                     : "~6.24.0",
-        "flow-bin"                      : "~0.42.0",
-        "flow-typed"                    : "~2.0.0",
-        "babel-preset-flow"             : "~6.23.0",
-        "babel-preset-es2015"           : "~6.24.0",
-        "babel-preset-stage-1"          : "~6.22.0"
+    "devDependencies": {
+        "babel-cli": " 6.24.1",
+        "babel-core": " 6.24.1",
+        "babel-preset-es2015": " 6.24.1",
+        "babel-preset-flow": " 6.23.0",
+        "babel-preset-stage-1": " 6.24.1",
+        "flow-bin": " 0.45.0",
+        "flow-typed": " 2.1.2"
     },
-
-
-    "scripts"           : {
-        "start"                 : "node --harmony-async-await lib/index.js",
-        "build"                 : "babel --out-dir ./lib ./src",
-        "flow-typed"            : "flow-typed install"
+    "scripts": {
+        "start": "node --harmony-async-await lib/index.js",
+        "build": "babel --out-dir ./lib ./src",
+        "flow-typed": "flow-typed install"
     }
 }
