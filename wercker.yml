@@ -1,4 +1,4 @@
-box: node:6
+box: node:6.10
 
 bundle-lambda:
     steps:
@@ -7,7 +7,7 @@ bundle-lambda:
             name: install dependencies
             code: |
                 export YARN_CACHE=$WERCKER_CACHE_DIR/yarn
-                HOME=$YARN_CACHE yarn --pure-lockfile
+                HOME=$YARN_CACHE yarn --pure-lockfile  --ignore-scripts
 
         - script:
             name: install zip
@@ -54,7 +54,7 @@ build-deploy-app:
             name: install dependencies
             code: |
                 export YARN_CACHE=$WERCKER_CACHE_DIR/yarn
-                HOME=$YARN_CACHE yarn --pure-lockfile
+                HOME=$YARN_CACHE yarn --pure-lockfile --ignore-scripts
 
         - script:
             cwd: app
