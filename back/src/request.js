@@ -15,7 +15,9 @@ export type Options = {
 
     json    ?: boolean,
 }
-
+/**
+ * http request wrapper
+ */
 export const request = ( options: Options ): Promise<any> =>
 
     new Promise( (resolve, reject, onCancel) => {

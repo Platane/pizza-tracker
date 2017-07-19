@@ -55,7 +55,7 @@ const _fetchTimeLine = async ( client: TwitterType, userName: string, cursor: ?s
         'statuses/user_timeline',
         {
             screen_name         : userName,
-            exclude_replies     : true,
+            exclude_replies     : false,
             contributor_details : false,
             include_rts         : false,
             trim_user           : true,
@@ -64,7 +64,12 @@ const _fetchTimeLine = async ( client: TwitterType, userName: string, cursor: ?s
         }
     )
 
-    const oldest = data.length > 0 && data.reduce( (oldest, x) => x.created_at < oldest.created_at ? x : oldest )
+    // the oldest tweet
+    const oldest = data
+        .reduce(
+            (oldest, x) => !oldest || new Date(x.created_at) < new Date(oldest.created_at) ? x : oldest
+            , null
+        )
 
     return {
         counts      : data
