@@ -101,13 +101,12 @@ module.exports = {
 
     plugins : [
 
-        ...(
-            production
-                ? [
-                    new UglifyJSPlugin()
-                ]
-                : []
-        ),
+        production && new webpack.optimize.ModuleConcatenationPlugin(),
+
+        production && new webpack.optimize.UglifyJsPlugin({
+                sourceMap: false,
+                comments: false,
+            }),
 
         new webpack.DefinePlugin(
                 [
@@ -120,7 +119,7 @@ module.exports = {
                             : { ...o, [ 'process.env.'+name ] : `'${ process.env[ name ] }'`}
                     ,{})
         )
-    ],
+    ].filter(Boolean),
 
     devtool : production ? false : 'source-map',
 }
