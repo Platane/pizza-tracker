@@ -18,7 +18,6 @@
         "flow-typed": " 2.1.2"
     },
     "scripts": {
-        "start": "node --harmony-async-await lib/index.js",
         "build": "babel --out-dir ./lib ./src",
         "flow-typed": "flow-typed install"
     }
