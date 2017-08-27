@@ -20,10 +20,15 @@ const removeChildren = domElement => {
         domElement.removeChild(domElement.children[0])
 }
 
+type State = {
+    twttr : *,
+    loaded: boolean,
+    loading: boolean,
+}
 
 export class Tweet extends React.Component {
 
-    state = {
+    state : State = {
         twttr   : null,
         loaded  : false,
         loading : false,

@@ -16,7 +16,7 @@ export const App = () =>
 
             <div className={style.tweetListWrapper}>
                 <div className={style.tweetList}>
-                    <TweetList />
+                    <TweetList width={340} />
                 </div>
             </div>
 
