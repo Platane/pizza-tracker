@@ -39,7 +39,7 @@ module.exports = {
                                 'transform-es2015-literals',
                                 'transform-es2015-arrow-functions',
                                 'transform-class-properties',
-                                ['transform-es2015-modules-commonjs', {'allowTopLevelThis': true}],
+                                'transform-es2015-modules-commonjs',
                                 'transform-object-rest-spread'
                             ]
                         }

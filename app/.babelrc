@@ -1,11 +1,8 @@
 {
-    "presets": [
-        "flow",
-        "react"
-    ],
+    "presets": ["flow", "react"],
     "plugins": [
         "transform-class-properties",
-        ["transform-es2015-modules-commonjs", {"allowTopLevelThis": true}],
+        "transform-es2015-modules-commonjs",
         "transform-object-rest-spread"
     ]
 }
