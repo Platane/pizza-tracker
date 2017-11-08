@@ -40,7 +40,8 @@ export const update = async ( all: boolean = false  ) : Promise<void> => {
 
                 // search new counts for the user,
                 // if the flag 'all' is set to true, search since the start of time
-                const new_counts        = await fetcher.fetch( userName, all ? START_OF_TIME : searchSince )
+                // use the fetchAll function, as the fetchLast does not includes RT
+                const new_counts        = await fetcher.fetchAll( userName, all ? START_OF_TIME : searchSince )
 
                 return {
                     userName,

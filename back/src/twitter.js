@@ -15,6 +15,7 @@ type Config = {
 /**
  * use the search api to preciselly search for the tweet
  * /!\ this allows to pull only recent tweet ( 7 days old max )
+ * /!\ this does not seems to includes RT
  */
 const fetchLast = async ( client: TwitterType, userName: string ) : Promise<Array<Count>> => {
     const data = await client.get(
