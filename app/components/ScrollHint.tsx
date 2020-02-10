@@ -13,7 +13,7 @@ export const ScrollHint = ({ displayed, ...props }) => {
       <Group transform="translate(0,-24)">
         <PathTic d="M0 -2 L0 2" />
         <PathPotato d="M-25 -20 Q-25 -45 0 -45 Q25 -45 25 -20 L25 20 Q25 45 0 45 Q-25 45 -25 20z" />
-        <Text x={0} y={90}>
+        <Text x={0} y={90} data-nosnippet>
           scroll
         </Text>
       </Group>
