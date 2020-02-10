@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { useData } from "./_hooks/useData";
 import { useScrollValue } from "./_hooks/useScrollValue";
 import styled from "@emotion/styled";
@@ -34,6 +34,11 @@ export const App = () => {
   const kDate = lerp(limit[0], limit[1])(k);
 
   const yearColor = `hsl(${(year ^ 3) + (year ^ 2) * 47},60%,40%)`;
+
+  useEffect(() => {
+    if (document.body.parentElement)
+      document.body.parentElement.style.backgroundColor = yearColor;
+  }, [yearColor]);
 
   return (
     <>
