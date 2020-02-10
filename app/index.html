@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title><%= title %></title>
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="<%= publicPath %>apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="<%= publicPath %>favicon-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="<%= publicPath %>favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="<%= publicPath %>favicon-16x16.png"
+      sizes="16x16"
+    />
+
+    <meta content="<%= url %>/screen.jpg" property="og:image" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="800" />
+
+    <meta content="<%= url %>/favicon-192x192.png" property="og:image" />
+    <meta property="og:image:width" content="192" />
+    <meta property="og:image:height" content="192" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="<%= title %>" />
+    <meta name="twitter:creator" content="<%= author.twitter %>" />
+    <meta name="twitter:description" content="<%= description %>" />
+    <meta name="twitter:image" content="<%= url %>/screen.jpg" />
+
+    <meta content="<%= url %>" property="og:url" />
+    <meta content="<%= title %>" property="og:title" />
+    <meta content="<%= description %>" property="og:description" />
+    <meta description="<%= description %>" />
+
+    <style>
+      @font-face {
+        font-family: Italianno;
+        src: url(<%=fontAsset%>);
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+        box-sizing: border-box;
+        overflow-y: scroll;
+        background-color: #2958a3;
+      }
+
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+
+      html,
+      body,
+      #root {
+        margin: 0;
+        min-height: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

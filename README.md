@@ -1,40 +1,54 @@
-Pizza Tracker
-====
+# Pizza Tracker
 
-[![wercker status](https://app.wercker.com/status/d3ef8b60ae1a0a19d4b9c41677547448/s/master "wercker status")](https://app.wercker.com/project/byKey/d3ef8b60ae1a0a19d4b9c41677547448)
+![type definitions](https://img.shields.io/npm/types/typescript?style=flat-square)
+![code style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/platane/pizza-tracker/main?label=main&style=flat-square)](https://github.com/Platane/pizza-tracker/actions?query=workflow%3Amain)
 
-[@mrhelmut](https://twitter.com/mrhelmut) had the wonderful idea to keep us updated on twitter every time a pizza is consumed. 
+> Track the pizza you eat over the year !
 
-Meaning you can now accurately track the pizza count with awesome pizza rain effect!
+[@mrhelmut](https://twitter.com/mrhelmut) had the wonderful idea to keep us updated on [twitter](https://twitter.com/mrhelmut/status/818428553289236480) every time a pizza is consumed.
+
+This app crunch the data into beautiful 3d charts.
 
 [![screenshot](https://platane.github.io/pizza-tracker/screen.gif)](https://platane.github.io/pizza-tracker/)
 
-😱
-
 [see the chart!](https://platane.github.io/pizza-tracker/)
 
-# structure
+# Features
 
-## back
+## **Crawler**
 
-The data are pulled from the twitter API.
+Every 20min a **aws lambda** kicks in and fetch the latest tweets.
 
-The server is actually a [aws lambda function](https://aws.amazon.com/lambda) which writes in a [gist](https://gist.github.com/Platane/20026468d92c5d63a6fe71265d1fda08). It looks for new eligible tweets every 20 minutes.
+Two strategies for the **twitter api**:
 
-This approach brings several benefits:
-- It's really cheap !  
-The aws lambda function runs for ~3s every 20min. It costs nothing while in the free tier, and close to nothing after one year. Gist are free as well. yay!
+- using the search endpoint, but it only allows to get tweets not older than 7 days
+- get all the tweet and filter after, which is obviously costly in term of request and api credit
 
-- As gist are versioned, we get free roll back ( in case something goes horribly wrong ).
+As storage, the crawler writes on a [**gist** file](https://gist.github.com/Platane/20026468d92c5d63a6fe71265d1fda08).
 
-- gist are accessed as simple static resources, letting github handle the traffic.
+## **Procedural pizza generator**
 
-## app
+The cute pizzas used as particles are generated **procedurally** from a random seed.
 
-I wanted to use vanilla webGL, with handcrafted shaders!
+## **3d Charts**
 
+The charts are drawn with vanilla **webgl**. From handmade shaders.
 
+## **Deployment**
 
+Deployment on aws is automated with **serverless**.
 
+Static assets are served from **github pages**. _( there is also a lambda ready to serve the assets, but the [url is less friendly](https://elbx5mgdlk.execute-api.eu-west-1.amazonaws.com/stage) )_
 
+**Github actions** automatically run tests and deployment on commit.
 
+# Usage
+
+`yarn install`
+
+`yarn dev`
+
+# License
+
+[MIT](./LICENSE.md)

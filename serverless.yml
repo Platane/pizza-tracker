@@ -1,0 +1,56 @@
+service: pizza-tracker
+
+package:
+  individually: true
+  excludeDevDependencies: false
+  exclude:
+    - ./**
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-1
+  stage: stage
+  logRetentionInDays: 7
+  memorySize: 256
+  timeout: 10
+  environment:
+    TWITTER_CONSUMER_KEY: ${env:TWITTER_CONSUMER_KEY}
+    TWITTER_CONSUMER_SECRET: ${env:TWITTER_CONSUMER_SECRET}
+    TWITTER_ACCESS_TOKEN_KEY: ${env:TWITTER_ACCESS_TOKEN_KEY}
+    TWITTER_ACCESS_TOKEN_SECRET: ${env:TWITTER_ACCESS_TOKEN_SECRET}
+    GIST_ID: ${env:GIST_ID}
+    GIST_USER: ${env:GIST_USER}
+    GIST_TOKEN: ${env:GIST_TOKEN}
+
+functions:
+  app-assets-server:
+    package:
+      include:
+        - dist/app-assets-server/**
+    handler: dist/app-assets-server/index.handle
+    headers:
+      Cache-Control: "'public, max-age=86400, immutable'"
+    description: serve assets
+    contentHandling: CONVERT_TO_BINARY
+    events:
+      - http: GET /
+      - http: GET /{proxy+}
+
+  crawler:
+    timeout: 120
+    package:
+      include:
+        - dist/crawler/index.js
+    handler: dist/crawler/index.handle
+    events:
+      - schedule: rate(40 minutes)
+
+plugins:
+  - serverless-apigw-binary
+
+custom:
+  apigwBinary:
+    types:
+      - "*/*"
+      - "image/*"

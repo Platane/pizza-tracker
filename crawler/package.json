@@ -1,0 +1,14 @@
+{
+  "name": "@pizza-tracker/crawler",
+  "version": "0.0.1",
+  "private": true,
+  "sideEffects": false,
+  "dependencies": {
+    "twitter": "1.7.1",
+    "@pizza-tracker/entities": "0.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "ncc build ./handlers/crawler.ts -o ../dist/crawler"
+  }
+}
