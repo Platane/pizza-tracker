@@ -29,13 +29,17 @@
       sizes="16x16"
     />
 
-    <meta content="<%= url %>/screen.jpg" property="og:image" />
+    <meta property="og:image" content="<%= url %>/screen.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="800" />
 
-    <meta content="<%= url %>/favicon-192x192.png" property="og:image" />
+    <meta property="og:image" content="<%= url %>/favicon-192x192.png" />
     <meta property="og:image:width" content="192" />
     <meta property="og:image:height" content="192" />
+
+    <meta property="og:url" content="<%= url %>" />
+    <meta property="og:title" content="<%= title %>" />
+    <meta property="og:description" content="<%= description %>" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="<%= title %>" />
@@ -43,9 +47,7 @@
     <meta name="twitter:description" content="<%= description %>" />
     <meta name="twitter:image" content="<%= url %>/screen.jpg" />
 
-    <meta content="<%= url %>" property="og:url" />
-    <meta content="<%= title %>" property="og:title" />
-    <meta content="<%= description %>" property="og:description" />
+    <meta name="description" content="<%= description %>" />
     <meta description="<%= description %>" />
 
     <style>
@@ -78,7 +80,7 @@
   </head>
   <body>
     <h1
-      style="width:1px;height:1px;display:block;position:fixed;font-size:0.1px;font-family:Italianno"
+      style="width:100px;right:-100px;top:-100px;display:block;position:fixed;font-size:14px;font-family:Italianno"
     >
       <%= description %>
     </h1>

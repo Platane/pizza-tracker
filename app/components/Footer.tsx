@@ -9,7 +9,7 @@ export const Footer = props => (
     <div>
       made by <A href="https://twitter.com/platane_">@platane</A>
     </div>
-    <A href="https://github.com/platane/pizza-tracker">
+    <A title="github" href="https://github.com/platane/pizza-tracker">
       <Icon viewBox="0 0 1 1">
         <path d={githubLogoPath} />
       </Icon>
