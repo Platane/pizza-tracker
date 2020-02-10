@@ -16,7 +16,7 @@ This app crunch the data into beautiful 3d charts.
 
 # Features
 
-## **Crawler**
+### **Crawler**
 
 Every 20min a **aws lambda** kicks in and fetch the latest tweets.
 
@@ -27,15 +27,15 @@ Two strategies for the **twitter api**:
 
 As storage, the crawler writes on a [**gist** file](https://gist.github.com/Platane/20026468d92c5d63a6fe71265d1fda08).
 
-## **Procedural pizza generator**
+### **Procedural pizza generator**
 
 The cute pizzas used as particles are generated **procedurally** from a random seed.
 
-## **3d Charts**
+### **3d Charts**
 
 The charts are drawn with vanilla **webgl**. From handmade shaders.
 
-## **Deployment**
+### **Deployment**
 
 Deployment on aws is automated with **serverless**.
 
