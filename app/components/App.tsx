@@ -140,8 +140,6 @@ const Container = styled.div`
   right: 0;
   bottom: 0;
   transition: background-color 220ms linear;
-  // display: flex;
-  // flex-direction: row;
 `;
 
 const Footer_ = styled(Footer)`

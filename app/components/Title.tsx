@@ -9,8 +9,6 @@ export const Title = ({ year, title, ...props }) => (
     <H1>〝 {title} 〟</H1>
   </Container>
 );
-// <H1 style={{ fontSize: "50px", letterSpacing: "12px" }}>{year}</H1>
-// <H1 style={{ transform: "rotate(65deg)", display: "block" }}>f</H1>
 
 const Container = styled.div`
   display: flex;

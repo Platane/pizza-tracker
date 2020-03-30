@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useTwitter } from "./_hooks/useTwitter";
 import { TweetPlaceholder } from "./TweetPlaceholder";
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
 import { wait } from "../utils/time";
+import { useTwitterSDK } from "./_hooks/useTwitterSDK";
 
 export const Tweet = ({
   width,
@@ -12,7 +12,7 @@ export const Tweet = ({
   worldScale = 1,
   ...props
 }) => {
-  const twttr = useTwitter();
+  const twttr = useTwitterSDK();
   const [status, setStatus] = useState(
     "not-loaded" as "not-loaded" | "transition" | "loaded"
   );
