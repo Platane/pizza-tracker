@@ -4,27 +4,50 @@ import { removeDuplicateSteps } from "../utils/removeDuplicateSteps";
 import userNames from "../../app/assets/content/userNames";
 
 export const handle = async () => {
-  const users = await read();
+  // read the previous users from the db
+  const previousUsers = await read();
 
-  await Promise.all(
+  // update every users
+  const newUsers = await Promise.all(
     userNames.map(async userName => {
       console.log("fetching new tweets from " + userName);
 
-      const user = users.find(u => u.userName === userName) || {
+      const user = previousUsers.find(u => u.userName === userName) || {
         steps: [],
         lastCheckDate: 0,
         userName
       };
 
-      user.lastCheckDate = Date.now();
-
       const news = await fetchSteps(userName, user.lastCheckDate);
 
-      console.log(news);
-
-      user.steps = removeDuplicateSteps([...user.steps, ...news]);
+      return {
+        ...user,
+        lastCheckDate: Date.now(),
+        steps: removeDuplicateSteps([...user.steps, ...news])
+      };
     })
   );
 
-  await write(users);
+  // check if we need to write
+  if (
+    newUsers.some(newUser => {
+      const previousUser = previousUsers.find(
+        u => u.userName === newUser.userName
+      );
+
+      return (
+        //
+        // if the user is new
+        !previousUser ||
+        //
+        // if the user have new steps
+        previousUser.steps.length < newUser.steps.length ||
+        //
+        // if the last write is older than 6 days
+        previousUser.lastCheckDate + 6 * 24 * 60 * 60 * 1000 <
+          newUser.lastCheckDate
+      );
+    })
+  )
+    await write(newUsers);
 };
