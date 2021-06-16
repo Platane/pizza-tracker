@@ -52,7 +52,7 @@ jobs:
           GIST_USER: ${{ secrets.GIST_USER }}
           PUBLIC_PATH: /pizza-tracker/
 
-      - uses: crazy-max/ghaction-github-pages@068e494
+      - uses: crazy-max/ghaction-github-pages@068e4942707a7ae27eb35f185a11bc077933ff42
         with:
           target_branch: gh-pages
           build_dir: app/.build
